@@ -22,7 +22,9 @@ namespace Phoenix.WebApp.Components.Pages
         public IRepositoryBase<Entity.Warehouse> _warehouseRepo { get; set; }
         [Inject] 
         public IRepositoryBase<Entity.Country> _countryRepo { get; set; }
+        public CountryLookup countryLookupComponent { get; set; } = new();
 
+        public string searchString = "";
 
         protected override async Task OnInitializedAsync()
         {
@@ -45,45 +47,43 @@ namespace Phoenix.WebApp.Components.Pages
             }
         }
 
-        //Autocomplete
-        List<Country>? countries;
-        List<Country>? allCountries;
-        int? selectedCountryId;
-        string? selectedCountryName;
-        string? filter;
-
+        bool countryLookup = false;
         async Task HandleInput(ChangeEventArgs e)
         {
-           if (allCountries == null || !allCountries.Any())
-            {
-                var result = await _countryRepo.GetAll();
-                if (result != null && result.Any())
-                {
-                    allCountries = result.ToList();
-                }
-            } 
+            countryLookup = true;
+            searchString = e.Value?.ToString();
+            //countryLookupComponent.LookupText = e.Value?.ToString();
 
-            filter = e.Value?.ToString();
-            if (allCountries == null || !allCountries.Any()) return;
+           //if (allCountries == null || !allCountries.Any())
+           // {
+           //     var result = await _countryRepo.GetAll();
+           //     if (result != null && result.Any())
+           //     {
+           //         allCountries = result.ToList();
+           //     }
+           // } 
 
-            if (filter?.Length < 2)
-            {
-                countries = allCountries.Take(10).ToList();
-                selectedCountryName = string.Empty;
-                selectedCountryId = null;
-                return;
-            }
-            countries = allCountries.Where(c => 
-                c.Name.Contains(filter!, StringComparison.OrdinalIgnoreCase)
-                || c.Code.StartsWith(filter!, StringComparison.OrdinalIgnoreCase)).Take(10).ToList();
+            // filter = e.Value?.ToString();
+            // if (allCountries == null || !allCountries.Any()) return;
+
+            // if (filter?.Length < 2)
+            // {
+            //     countries = allCountries.Take(10).ToList();
+            //     selectedCountryName = string.Empty;
+            //     selectedCountryId = null;
+            //     return;
+            // }
+            // countries = allCountries.Where(c => 
+            //     c.Name.Contains(filter!, StringComparison.OrdinalIgnoreCase)
+            //     || c.Code.StartsWith(filter!, StringComparison.OrdinalIgnoreCase)).Take(10).ToList();
         }
 
-        void SelectCountry(int id)
+        void SelectCountry(Country? country)
         {
-            selectedCountryId = id;
-            selectedCountryName = countries!.First(c => c.Id == id).Code;
-            warehouse.CountryCode = selectedCountryName;
-            countries = null;
+            if (country == null) return;
+            warehouse.CountryId = country.Id;
+            warehouse.CountryCode = country.Code;
+            countryLookup = false;
         }
         private void OnValidSubmit()
         {
