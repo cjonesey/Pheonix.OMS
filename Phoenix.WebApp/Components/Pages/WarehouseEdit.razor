@@ -1,0 +1,104 @@
+﻿@page "/warehouseedit/{Id}"
+@using Phoenix.WebApp.Components.Parts
+
+
+<div class="h3" role="heading" aria-level="2">@warehouse.Id - @warehouse.Name</div>
+<div>
+    <button>button 1</button>
+    <button>button 2</button>
+</div>
+<EditForm Model="@warehouse" OnValidSubmit="OnValidSubmit">
+    <div class="card">
+        <div class="card-body">
+            <span class="card-title" role="heading" aria-level="3">Address &amp; Contact</span>    
+            <div class="col-md-6">
+                <div class="form-floating mb-3 mt-3">
+                    <InputNumber class="form-control" @bind-Value="@warehouse.Id" id="warehouseId" name="warehouseId"/>
+                    <label for="warehouseId">Warehouse Id</label>
+                </div>    
+                <div class="form-floating mb-3 mt-3">
+                <InputText class="form-control" @bind-Value="@warehouse.Name" id="warehouseName" name="warehouseName"/>
+                <label for="warehouseName">Name</label>
+            </div>
+                <div class="form-floating mb-3 mt-3">
+                <InputText class="form-control" @bind-Value="@warehouse.Street1" id="street1" name="street1" />
+                    <label for="Street1">Street Line 1</label>
+            </div>
+                <div class="form-floating mb-3 mt-3">
+                    <InputText class="form-control" @bind-Value="@warehouse.Street2" id="street2" name="street2" />
+                    <label for="street2">Street Line 2</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <InputText class="form-control" @bind-Value="@warehouse.City" id="city" name="city" />
+                    <label for="city">City</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <InputText class="form-control" @bind-Value="@warehouse.County" id="county" name="county" />
+                    <label for="county">County</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <InputSelect @bind-Value="@warehouse.CountryId" id="country" name="country" class="form-control">
+                        @foreach (var (id, item) in _countries)
+                        {
+                            <option value="@id">@item.ToString()</option>
+                        }
+                    </InputSelect>
+                    <label for="country">Country</label>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <InputText class="form-control" @bind-Value="@warehouse.Postcode" id="postcode" name="postcode" />
+                    <label for="postcode">Postcode</label>
+                </div>
+
+                <div class="form-floating autocomplete">
+                    <input class="form-control filter" 
+                            @bind="@warehouse.CountryCode"
+                            @oninput=HandleInput
+                            id ="coutrycode" name="countrycode" />
+                    <label for="countrycode">Country Code</label>
+                    @if (countries is not null)
+                    {
+                        <ul class="options">
+                            @if (countries.Any())
+                            {
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var country in countries)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <li class="option" @onclick=@(_ => SelectCountry(country.Id))>@country.Code</li>
+                                                </td>
+                                                <td>@country.Name</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            }
+                            else
+                            {
+                                <li class="disabled option">No results</li>
+                            }
+                        </ul>
+                    }
+                </div>
+                @if (!string.IsNullOrWhiteSpace(selectedCountryName))
+                {
+                    <p class="mt-3">
+                        Selected customer is @selectedCountryName with ID <strong>@selectedCountryId</strong>
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</EditForm>
+    <button type="submit">Save</button>
+
+

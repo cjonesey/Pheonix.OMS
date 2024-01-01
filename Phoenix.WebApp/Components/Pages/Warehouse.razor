@@ -1,0 +1,23 @@
+﻿@page "/warehouse"
+<h3>Warehouse</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Street1</th>
+            <th>Postcode</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _warehouses)
+        {
+            <tr>
+                <td><a href="/warehouseedit/@item.Id">@item.Id</a></td>
+                <td>@item.Name</td>
+                <td>@item.Street1</td>
+                <td>@item.Postcode</td>
+            </tr>
+        }
+    </tbody>
+</table>

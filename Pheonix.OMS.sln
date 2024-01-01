@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pheonix.OMS.Domain", "Pheonix.OMS.Domain\Pheonix.OMS.Domain.csproj", "{2B2987BF-E75B-45DF-A689-EF1C6E85FC11}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoenix.WebApp", "Phoenix.WebApp\Phoenix.WebApp.csproj", "{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B2987BF-E75B-45DF-A689-EF1C6E85FC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B2987BF-E75B-45DF-A689-EF1C6E85FC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B2987BF-E75B-45DF-A689-EF1C6E85FC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B2987BF-E75B-45DF-A689-EF1C6E85FC11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90F73AF5-DA7B-44F9-9279-A5797F310644}
+	EndGlobalSection
+EndGlobal
