@@ -25,11 +25,11 @@ namespace Phoenix.WebApp.Components.Parts
         private string _lookupText = "";
 
         [Parameter]
-        public EventCallback<Country> OnCountrySelected { get; set; }
+        public EventCallback<Entity.Country> OnCountrySelected { get; set; }
 
 
-        List<Country>? countries;
-        List<Country>? allCountries;
+        List<Entity.Country>? countries;
+        List<Entity.Country>? allCountries;
         int? selectedCountryId;
         string? selectedCountryName;
         string? filter;

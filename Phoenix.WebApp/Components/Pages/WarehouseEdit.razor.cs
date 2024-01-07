@@ -78,7 +78,7 @@ namespace Phoenix.WebApp.Components.Pages
             //     || c.Code.StartsWith(filter!, StringComparison.OrdinalIgnoreCase)).Take(10).ToList();
         }
 
-        void SelectCountry(Country? country)
+        void SelectCountry(Entity.Country? country)
         {
             if (country == null) return;
             warehouse.CountryId = country.Id;

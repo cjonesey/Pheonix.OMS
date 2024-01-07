@@ -1,0 +1,43 @@
+﻿@page "/countryedit/{id}"
+<h3>Country Card</h3>
+
+<div class="h3" role="heading" aria-level="2">@Country.Code - @Country.Name</div>
+<div>
+    <nav class="navbar navbar-expand" aria-label="Country Toolbar">
+        <div class="container-fluid border-bottom border-top">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#countryToolbar" aria-controls="countryToolbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="countryToolbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <button class="btn">New</button>
+                        @* <a class="nav-link active" aria-current="page" href="#">New</a> *@
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Save</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Delete</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<EditForm Model="@Country" OnValidSubmit="OnValidSubmit">
+    <div class="form-floating mb-3 mt-3">
+        <InputText class="form-control" @bind-Value="@Country.Code" id="countryCode" name="countryCode" />
+        <label for="countryCode">Code</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <InputText class="form-control" @bind-Value="@Country.ISOCode2" id="countryISOCode2" name="countryISOCode2" />
+        <label for="countryISOCode2">ISO Code 2</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <InputText class="form-control" @bind-Value="@Country.Name" id="countryName" name="countryName" />
+        <label for="countryName">Name</label>
+    </div>
+</EditForm>
+<button type="submit">Save</button>
