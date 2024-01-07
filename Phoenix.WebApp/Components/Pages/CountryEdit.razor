@@ -1,6 +1,5 @@
 ﻿@page "/countryedit/{id}"
-<h3>Country Card</h3>
-
+<h4><a href="#" class="backicon bi bi-arrow-left"></a> Country Card</h4>
 <div class="h3" role="heading" aria-level="2">@Country.Code - @Country.Name</div>
 <div>
     <nav class="navbar navbar-expand" aria-label="Country Toolbar">
@@ -12,32 +11,39 @@
             <div class="collapse navbar-collapse" id="countryToolbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <button class="btn">New</button>
-                        @* <a class="nav-link active" aria-current="page" href="#">New</a> *@
+                        <button class="btn bi bi-plus p-2"> New</button>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Save</a>
+                        <button class="btn bi bi-floppy p-2" type="submit" onclick=""> Save</button>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Delete</a>
+                        <button class="btn bi-arrow-counterclockwise p-2"> Cancel</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi bi-x-square p-2"> Delete</button>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </div>
-<EditForm Model="@Country" OnValidSubmit="OnValidSubmit">
-    <div class="form-floating mb-3 mt-3">
-        <InputText class="form-control" @bind-Value="@Country.Code" id="countryCode" name="countryCode" />
-        <label for="countryCode">Code</label>
-    </div>
-    <div class="form-floating mb-3 mt-3">
-        <InputText class="form-control" @bind-Value="@Country.ISOCode2" id="countryISOCode2" name="countryISOCode2" />
-        <label for="countryISOCode2">ISO Code 2</label>
-    </div>
-    <div class="form-floating mb-3 mt-3">
-        <InputText class="form-control" @bind-Value="@Country.Name" id="countryName" name="countryName" />
-        <label for="countryName">Name</label>
-    </div>
-</EditForm>
+
+<div class="h4 pt-2">General</div>
+<div class="card-body border-3 border-top">
+    <EditForm Model="@Country" OnValidSubmit="OnValidSubmit">
+        <div class="form-floating mb-3 mt-3">
+            <InputText class="form-control" @bind-Value="@Country.Code" id="countryCode" name="countryCode" />
+            <label for="countryCode">Code</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <InputText class="form-control" @bind-Value="@Country.ISOCode2" id="countryISOCode2" name="countryISOCode2" />
+            <label for="countryISOCode2">ISO Code 2</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <InputText class="form-control" @bind-Value="@Country.Name" id="countryName" name="countryName" />
+            <label for="countryName">Name</label>
+        </div>
+    </EditForm>
+</div>
+
 <button type="submit">Save</button>
