@@ -3,9 +3,34 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "provider": "cdnjs",
       "library": "bootstrap-icons@1.11.3",
       "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "popper.js@2.11.8",
+      "destination": "wwwroot/lib/popper.js/",
+      "files": [
+        "umd/enums.js",
+        "umd/enums.js.map",
+        "umd/enums.min.js",
+        "umd/enums.min.js.map",
+        "umd/popper-base.js",
+        "umd/popper-base.js.map",
+        "umd/popper-base.min.js",
+        "umd/popper-base.min.js.map",
+        "umd/popper-lite.js",
+        "umd/popper-lite.js.map",
+        "umd/popper-lite.min.js",
+        "umd/popper-lite.min.js.map",
+        "umd/popper.js",
+        "umd/popper.js.map",
+        "umd/popper.min.js",
+        "umd/popper.min.js.map"
+      ]
+    },
+    {
+      "library": "bootstrap@5.3.2",
+      "destination": "wwwroot/lib/bootstrap/"
     }
   ]
 }

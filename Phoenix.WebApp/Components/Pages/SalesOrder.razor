@@ -1,0 +1,22 @@
+﻿@page "/salesorder"
+<h3>Sales Order</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<td>Order Date</td>
+			<td>Customer ID</td>
+			<td>Customer Name</td>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var item in _salesOrders)
+		{
+			<tr>
+				<td>@item.OrderDate</td>
+				<td>@item.CustomerId</td>
+				<td>@item.CustomerName</td>
+			</tr>
+		}
+	</tbody>
+</table>

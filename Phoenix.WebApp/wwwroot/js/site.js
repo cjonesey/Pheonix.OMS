@@ -1,30 +1,28 @@
-﻿//// Get the modal
-//var modal = document.getElementById("myModal");
+﻿document.addEventListener("DOMContentLoaded", function () {
 
-//// Get the button that opens the modal
-//var btn = document.getElementById("myBtn");
+	document.querySelectorAll('.sidebar .nav-link').forEach(function (element) {
+		element.addEventListener('click', function (e) {
 
-//// Get the <span> element that closes the modal
-//var span = document.getElementsByClassName("close")[0];
+			let nextEl = element.nextElementSibling;
+			let parentEl = element.parentElement;
 
-//// When the user clicks on the button, open the modal
-////btn.onclick = function () {
-////    modal.style.display = "block";
-////}
-//function openModal(object) {
-//    var ele = document.getElementById(object);
-//    modal.parentElement = ele;
-//    modal.style.display = "block";
-//}
+			if (nextEl) {
+				e.preventDefault();
+				let mycollapse = new bootstrap.Collapse(nextEl);
 
-//// When the user clicks on <span> (x), close the modal
-//span.onclick = function () {
-//    modal.style.display = "none";
-//}
+				if (nextEl.classList.contains('show')) {
+					mycollapse.hide();
+				} else {
+					mycollapse.show();
+					// find other submenus with class=show
+					var opened_submenu = parentEl.parentElement.querySelector('.submenu.show');
+					// if it exists, then close all of them
+					if (opened_submenu) {
+						new bootstrap.Collapse(opened_submenu);
+					}
+				}
+			}
+		});
+	})
 
-//// When the user clicks anywhere outside of the modal, close it
-//window.onclick = function (event) {
-//    if (event.target == modal) {
-//        modal.style.display = "none";
-//    }
-//}
+}); 
