@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pheonix.OMS.Domain", "Pheon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phoenix.WebApp", "Phoenix.WebApp\Phoenix.WebApp.csproj", "{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phoenix.WebClient", "Phoenix.WebClient\Phoenix.WebClient.csproj", "{36D6A5B7-4246-40F9-9CEB-0F426423108E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC4B57D3-9D7B-494D-B006-8F40D5B987F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36D6A5B7-4246-40F9-9CEB-0F426423108E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36D6A5B7-4246-40F9-9CEB-0F426423108E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36D6A5B7-4246-40F9-9CEB-0F426423108E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36D6A5B7-4246-40F9-9CEB-0F426423108E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

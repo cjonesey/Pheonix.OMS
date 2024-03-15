@@ -1,4 +1,11 @@
-﻿//// Get the modal
+﻿
+var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+    return new bootstrap.Dropdown(dropdownToggleEl)
+})
+
+
+//// Get the modal
 //var modal = document.getElementById("myModal");
 
 //// Get the button that opens the modal
