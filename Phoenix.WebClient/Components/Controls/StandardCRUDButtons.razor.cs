@@ -8,6 +8,7 @@ namespace Phoenix.WebClient.Components.Controls
         [Parameter] public EventCallback SaveInvoked { get; set; }
         [Parameter] public EventCallback CancelInvoked { get; set; }
         [Parameter] public EventCallback NewInvoked { get; set; }
+        [Parameter] public EventCallback DeleteInvoked { get; set; }
 
         public async void HandleSave()
         {
@@ -18,6 +19,12 @@ namespace Phoenix.WebClient.Components.Controls
         {
             await CancelInvoked.InvokeAsync();
         }
+
+        public async void HandleDelete()
+        {
+            await DeleteInvoked.InvokeAsync();
+        }
+
 
         public async void HandleNew()
         {

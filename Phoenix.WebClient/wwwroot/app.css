@@ -129,4 +129,144 @@ h1:focus {
 }
 
 
+.cs-toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+.cs-toast-visible {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+
+.autocomplete {
+    position: relative;
+}
+
+    .autocomplete .options {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background: white;
+        width: 100%;
+        padding: 0;
+        z-index: 10;
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        box-shadow: 0 30px 25px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .autocomplete .option {
+        display: block;
+        padding: 0.25rem;
+    }
+
+        .autocomplete .option .option-text {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .autocomplete .option:hover {
+            background: #1E90FF;
+            color: #fff;
+        }
+
+        .autocomplete .option.disabled {
+            background-color: lightgrey;
+            cursor: not-allowed;
+        }
+
+            .autocomplete .option.disabled:hover {
+                background: lightgrey;
+                color: var(--bs-body);
+            }
+
+
+.confirm-dialog-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.confirm-dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 20rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: white;
+    margin-top: 1.5rem;
+    position: fixed;
+}
+
 /* End Local Customisation */               
+
