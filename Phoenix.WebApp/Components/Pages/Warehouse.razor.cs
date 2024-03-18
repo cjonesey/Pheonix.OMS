@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Pheonix.OMS.Domain.Repository;
-using Entity = Pheonix.OMS.Domain;
+using Phoenix.Infrastructure;
+using Entity = Phoenix.Domain;
 
 namespace Phoenix.WebApp.Components.Pages
 {

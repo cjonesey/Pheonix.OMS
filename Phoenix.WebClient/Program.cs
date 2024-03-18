@@ -1,7 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using Phoenix.WebClient.Components;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContextFactory<PhoenixDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Phoenix"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
+
+builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

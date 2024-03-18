@@ -1,3 +1,37 @@
+:root {
+    --bs-blue: #437AB2;
+    --bs-indigo: #6610f2;
+    --bs-purple: #9265AC;
+    --bs-pink: #FCE0E1;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #ffc107;
+    --bs-green: #78BE20;
+    --bs-teal: #07828D;
+    --bs-green: #7ac142;
+    --bs-cyan: #0dcaf0;
+    --bs-black: #040100;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-navy: #003e7e;
+    --bs-gray-100: #f8f9fa;
+    --bs-gray-200: #e9ecef;
+    --bs-gray-300: #dee2e6;
+    --bs-gray-400: #ced4da;
+    --bs-gray-500: #adb5bd;
+    --bs-gray-600: #6c757d;
+    --bs-gray-700: #495057;
+    --bs-gray-800: #343a40;
+    --bs-gray-900: #212529;
+    --bs-primary: #437AB2;
+    --bs-secondary: #6c757d;
+    --bs-success: #78BE20;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #F1F1F1;
+    --bs-dark: #575F66;
+}
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -49,3 +83,50 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+/* Local Customisation */
+/* Add your own custom styles here */
+    .backicon {
+        font-size: 1.25rem;
+        margin-right: 0.5rem;
+        border: 1px solid #000;
+        border-radius: 50%;
+        background-color: var(--bs-navy);
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem;
+    }
+    .backicon:hover, .backicon:focus {
+        font-size: 1.15rem;
+        margin-right: 0.5rem;
+        border: 2px solid #000;
+        border-radius: 50%;
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem;
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    }
+
+    .listPage_checkBox {
+        display: none;
+    }
+
+.search-bar {
+    display: inline;
+    padding: .05rem .05rem;
+    font-size: 1rem;
+    line-height: 0.5;
+    background-clip: padding-box;
+    border-left: 1px solid #ced4da;
+    border-right: 1px solid #ced4da;
+    border-top: none;
+    border-bottom: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+
+/* End Local Customisation */               

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Pheonix.OMS.Domain.Repository;
+using Phoenix.Infrastructure;
 using Phoenix.WebApp.Components.Parts;
-using Entity = Pheonix.OMS.Domain;
+using Entity = Phoenix.Domain;
 
 namespace Phoenix.WebApp.Components.Pages
 {
     public partial class CountryEdit
     {
-        private Modal modal { get; set; }
-        [Parameter]
+        //private Modal modal { get; set; }
+        //[Parameter]
         public string? Id { get; set; }
         [Parameter]
         public Entity.Country Country { get; set; } = new();
