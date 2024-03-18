@@ -1,0 +1,46 @@
+﻿@page "/countries"
+<h3>Countries</h3>
+<div>
+    <nav class="navbar navbar-expand" aria-label="Country Toolbar">
+        <div class="container-fluid border-bottom border-top">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#countryToolbar" aria-controls="countryToolbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="countryToolbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <button class="btn bi bi-search p-2"> Search</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi bi-plus p-2"> New</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi bi-x-square p-2"> Delete</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>ISO Code2</th>
+            <th>Code</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _countries)
+        {
+            <tr>
+                <td><a href="/countryedit/@item.Id">@item.Id</a></td>
+                <td>@item.ISOCode2</td>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

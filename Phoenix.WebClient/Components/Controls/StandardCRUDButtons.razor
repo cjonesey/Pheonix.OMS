@@ -1,0 +1,26 @@
+﻿<div>
+    <nav class="navbar navbar-expand" aria-label="Main Toolbar">
+        <div class="container-fluid border-bottom border-top">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#countryToolbar" aria-controls="countryToolbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="MainToolbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <button class="btn bi bi-plus p-2" onclick="@HandleNew"> New</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi bi-floppy p-2" type="submit" onclick="@HandleSave"> Save</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi-arrow-counterclockwise p-2" onclick="@HandleCancel"> Cancel</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi bi-x-square p-2"> Delete</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

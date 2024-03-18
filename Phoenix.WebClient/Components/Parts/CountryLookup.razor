@@ -1,0 +1,29 @@
+﻿@rendermode InteractiveServer
+<button class="btn btn-primary" onclick="">Full</button>
+@if (countries != null && countries.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var country in countries)
+            {
+                <tr>
+                    <td>
+                        <li class="option" @onclick=@(_ => SelectCountry(country.Id))>@country.Code</li>
+                    </td>
+                    <td>@country.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <li class="disabled option">No results</li>
+}

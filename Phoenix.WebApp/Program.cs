@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Pheonix.OMS.Domain;
-using Pheonix.OMS.Domain.Repository;
+using Phoenix.Infrastructure;
 using Phoenix.WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);

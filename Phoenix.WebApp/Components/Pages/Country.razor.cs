@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Pheonix.OMS.Domain.Repository;
-using Entity = Pheonix.OMS.Domain;
+using Phoenix.Infrastructure;
+using Phoenix.Services;
+using Entity = Phoenix.Domain;
 
 namespace Phoenix.WebApp.Components.Pages
 {
@@ -8,8 +9,9 @@ namespace Phoenix.WebApp.Components.Pages
     {
         private List<Entity.Country> _countries = new List<Entity.Country>();
 
-        [Inject]
-        public IRepositoryBase<Entity.Country> _countryRepo { get; set; }
+        [Inject] public ILogger<Country>? _logger { get; set; }
+        [Inject] public ICountryService _countryService { get; set; }
+
 
 
         public Country()
@@ -17,7 +19,7 @@ namespace Phoenix.WebApp.Components.Pages
         }
         protected override async Task OnInitializedAsync()
         {
-            IEnumerable<Entity.Country> coutries = await _countryRepo.GetAll();
+            var coutries = await _countryService.GetAllCountries();
             if (coutries != null && coutries.Any())
             {
                 _countries = coutries.ToList();

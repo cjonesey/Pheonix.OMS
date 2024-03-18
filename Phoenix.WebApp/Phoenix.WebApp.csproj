@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pheonix.OMS.Domain\Pheonix.OMS.Domain.csproj" />
+    <ProjectReference Include="..\Phoenix.Domain\Phoenix.Domain.csproj" />
+    <ProjectReference Include="..\Phoenix.Infrastructure\Phoenix.Infrastructure.csproj" />
+    <ProjectReference Include="..\Phoenix.Services\Phoenix.Services.csproj" />
   </ItemGroup>
 
 </Project>

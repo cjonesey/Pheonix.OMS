@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Pheonix.OMS.Domain;
-using Pheonix.OMS.Domain.Migrations;
-using Pheonix.OMS.Domain.Repository;
+using Phoenix.Infrastructure;
 using Phoenix.WebApp.Components.Parts;
 using static System.Net.WebRequestMethods;
 
-using Entity = Pheonix.OMS.Domain;
+using Entity = Phoenix.Domain;
 
 namespace Phoenix.WebApp.Components.Pages
 {
