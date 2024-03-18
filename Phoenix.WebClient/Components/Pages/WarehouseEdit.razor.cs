@@ -14,23 +14,41 @@
 
         private ValidationMessageStore? messageStore;
 
+        protected bool dataIsLoaded = false;
+
         protected override async Task OnInitializedAsync()
         {
             if (_warehouse == null)
             {
                 _warehouse = new WarehouseModel();
+
                 if (!string.IsNullOrEmpty(Id) && int.TryParse(Id, out int idSearch))
                 {
                     var warehouse = await _warehouseService.GetWarehouseById(idSearch);
                     if (warehouse != null)
                     {
-                        _warehouse = warehouse;
+                        _warehouse = new WarehouseModel
+                        {
+                            Id = warehouse.Id,
+                            Name = warehouse.Name,
+                            Street1 = warehouse.Street1,
+                            Street2 = warehouse.Street2,
+                            City = warehouse.City,
+                            County = warehouse.County,
+                            Postcode = warehouse.Postcode,
+                            CreatedOn = warehouse.CreatedOn,
+                            ModifiedOn = warehouse.ModifiedOn,
+                            ChangeCheck = warehouse.ChangeCheck,
+                            CountryId = warehouse.CountryId,
+                            CountryCode = warehouse.CountryCode
+                        };
                     }
                 }
             }
             editContext = new(_warehouse);
             messageStore = new(editContext);
             editContext!.OnValidationRequested += HandleValidationRequested;
+            dataIsLoaded = true;
         }
 
         bool countryLookup = false;
