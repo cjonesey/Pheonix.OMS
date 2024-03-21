@@ -1,4 +1,5 @@
-﻿global using Phoenix.Infrastructure;
+﻿global using Phoenix.WebClient.Services;
+global using Phoenix.Infrastructure;
 global using Phoenix.Models.Shared;
 global using Phoenix.Services;
 global using Microsoft.AspNetCore.Components;

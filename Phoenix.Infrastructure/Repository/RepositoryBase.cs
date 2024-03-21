@@ -33,9 +33,20 @@ namespace Phoenix.Infrastructure
             throw new NotImplementedException();
         }
 
-        public virtual void Delete(TEntity entity)
+
+        public virtual async Task DeleteByID(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Set<TEntity>().FindAsync(id);
+            if (entity == null)
+                throw new InvalidDataException("Record not found");
+            await Delete(entity);
+        }
+
+        public async Task Delete(TEntity entity)
+        {
+            _context.Remove(entity);
+            _context.Entry(entity).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
 
         public virtual void DeleteRange(IEnumerable<TEntity> entities)

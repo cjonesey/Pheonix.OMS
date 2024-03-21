@@ -48,6 +48,7 @@ namespace Phoenix.Services
                     Street1 = warehouse.Street1,
                     Street2 = warehouse.Street2,
                     City = warehouse.City,
+                    County = warehouse.County,
                     Postcode = warehouse.Postcode,
                     CountryId = warehouse.CountryId,
                     CountryCode = warehouse.CountryCode,
@@ -67,6 +68,7 @@ namespace Phoenix.Services
                 Street1 = warehouseModel.Street1,
                 Street2 = warehouseModel.Street2,
                 City = warehouseModel.City,
+                County = warehouseModel.County,
                 Postcode = warehouseModel.Postcode,
                 CountryId = warehouseModel.CountryId,
                 CountryCode = warehouseModel.CountryCode,
@@ -86,6 +88,7 @@ namespace Phoenix.Services
                 Street1 = warehouseModel.Street1,
                 Street2 = warehouseModel.Street2,
                 City = warehouseModel.City,
+                County = warehouseModel.County,
                 Postcode = warehouseModel.Postcode,
                 CountryId = warehouseModel.CountryId,
                 CountryCode = warehouseModel.CountryCode,
@@ -96,5 +99,8 @@ namespace Phoenix.Services
             await _repository.Update(warehouse, warehouse.Id);
             return await GetWarehouseById(warehouse.Id);
         }
+
+        public async Task DeleteWarehouse(int warehouseID) => await _repository.DeleteByID(warehouseID);
+
     }
 }

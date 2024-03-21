@@ -1,9 +1,11 @@
-﻿function saveAsFile(fileName, content) {
+﻿function saveAsFile(filename, bytesBase64) {
+    debugger;
     var link = document.createElement('a');
-    link.download = fileName;
-    link.href = 'data:application/octet-stream,' + encodeURIComponent(content);
-    document.body.appendChild(link);
+    link.download = filename;
+    link.href = "data:application/octet-stream;base64," + bytesBase64;
+    document.body.appendChild(link); // Needed for Firefox
     link.click();
+    document.body.removeChild(link);
 }
 
 function makeListCheckBoxVisible() {
@@ -21,3 +23,8 @@ function makeListCheckBoxVisible() {
         checkBoxes[i].style.display = displayVal;
     }
 }
+
+window.showDialogFunction = function () {
+    document.getElementById('oms-dialog').showModal;
+}
+

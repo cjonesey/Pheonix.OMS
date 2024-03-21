@@ -26,5 +26,14 @@
         {
             _navigationManager.NavigateTo("/WarehouseEdit");
         }
+
+        public async Task ExportToExcel()
+        {
+            if (_warehouses != null || _warehouses!.Any())
+            {
+                var excelBytes = ExcelService.GenerateExcelWorkbook<WarehouseModel>(_warehouses!);
+                await _jsRuntime!.InvokeVoidAsync("saveAsFile", $"G2BPhoenix_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.xlsx", Convert.ToBase64String(excelBytes));
+            }
+        }
     }
 }

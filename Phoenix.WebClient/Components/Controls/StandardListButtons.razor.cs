@@ -8,6 +8,7 @@ namespace Phoenix.WebClient.Components.Controls
         [Parameter] public EventCallback SearchInvoked { get; set; }
         [Parameter] public EventCallback DeleteInvoked { get; set; }
         [Parameter] public EventCallback NewInvoked { get; set; }
+        [Parameter] public EventCallback ExportInvoked { get; set; }
 
         public async void HandleSearch()
         {
@@ -22,6 +23,11 @@ namespace Phoenix.WebClient.Components.Controls
         public async void HandleNew()
         {
             await NewInvoked.InvokeAsync();
+        }
+
+        public async void HandleExport()
+        {
+            await ExportInvoked.InvokeAsync();
         }
     }
 }
