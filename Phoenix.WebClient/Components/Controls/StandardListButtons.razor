@@ -6,23 +6,23 @@
             </button>
 
             <div class="collapse navbar-collapse" id="ListPageToolbar">
-
-                <ul class="navbar-nav me-auto">
+                <span class="pe-3">@MenuName </span>
+                <ul class="navbar-nav me-auto pr-1">
                     <InputText @bind-Value="_searchText" class="search-bar" placeholder="Search" />
                     <li class="nav-item">
-                        <button class="btn bi bi-search p-2"> Search</button>
+                        <button class="btn bi bi-search"> Search</button>
                     </li>
                     <li class="nav-item" onclick="@HandleNew">
-                        <button class="btn bi bi-plus p-2" > New</button>
+                        <button class="btn bi bi-plus" > New</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn bi bi-x-square p-2"> Delete</button>
+                        <button class="btn bi bi-x-square"> Delete</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn bi bi-three-dots-vertical p-2" onclick="javascript:makeListCheckBoxVisible()"> Select</button>
+                        <button class="btn bi bi-three-dots-vertical p-1" onclick="javascript:makeListCheckBoxVisible()"> Select</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn bi bi-filetype-xls p-2" onclick="@HandleExport"> Export</button>
+                        <button class="btn bi bi-filetype-xls p-1" onclick="@HandleExport"> Export</button>
                     </li>
                 </ul>
             </div>

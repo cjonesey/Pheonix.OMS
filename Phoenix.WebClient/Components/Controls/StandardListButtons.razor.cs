@@ -4,6 +4,7 @@ namespace Phoenix.WebClient.Components.Controls
 {
     public partial class StandardListButtons
     {
+        [Parameter] public string MenuName { get; set; } = "List Page";
         protected string _searchText { get; set; } = string.Empty;
         [Parameter] public EventCallback SearchInvoked { get; set; }
         [Parameter] public EventCallback DeleteInvoked { get; set; }

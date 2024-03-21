@@ -12,6 +12,7 @@ namespace Phoenix.Models.Shared
         public string FieldName { get; set; }
         public ConnectorType Connector { get; set; }
         public string Value { get; set; }
+        public bool FieldSelected { get; set; } = false;
     }
 
     public enum ConnectorType

@@ -6,10 +6,10 @@
 
         protected override async Task OnInitializedAsync()
         {
-            searchModel = new List<SearchModel>();
+            searchModel = [new SearchModel { Connector = ConnectorType.And, Id = Guid.NewGuid() }];
         }
 
-        protected List<string> fieldNames = new List<string> { "ProductCode", "Description", "Size", "Date" };
+        protected List<string> fieldNames = new List<string> { "Please select", "ProductCode", "Description", "Size", "Date" };
 
         public void AddItem()
         {
@@ -23,6 +23,27 @@
         {
             searchModel.Remove(item);
             StateHasChanged();
+        }
+
+        public void SetFieldName(ChangeEventArgs e)
+        {
+            if (e.Value == null) 
+                return;    
+            var codes = e.Value.ToString()!.Split('|');
+            if (codes.Length != 2) 
+                return;
+            var model = searchModel.Find(x => x.Id == Guid.Parse(codes[0]));
+            if (model != null)
+            {
+                model.FieldName = codes[1];
+                model.FieldSelected = true;
+            }
+            AddItem();
+            StateHasChanged();
+        }
+        private void ClearFilter(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+        {
+            searchModel = [new SearchModel { Connector = ConnectorType.And, Id = Guid.NewGuid() }];
         }
     }
 }

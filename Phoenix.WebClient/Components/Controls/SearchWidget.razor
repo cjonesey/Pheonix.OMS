@@ -1,38 +1,30 @@
 ﻿@page "/searchwidget"
 @rendermode InteractiveServer
 <div >
-    <div class="row">
-
+    <span>Filter List By :</span>
     @foreach (var item in searchModel)
     {
-        <div class="col-md-2">
-            <div class="row">
-            <InputSelect id="category" @bind-Value="item.FieldName" class="filter-control">
-                <option value="0">
-                    Select Field
-                </option>
-                @foreach (string field in fieldNames)
-                {
-                    <option value="@field">
-                        @field.ToString()
-                    </option>
-                }
-            </InputSelect>
-            </div>
-            <div class="row">
-            <InputText @bind-Value="item.Value"  class="filter-control" />
-            </div>
-        </div>
-        <div class="col-md-1">
-            <div class="row">
-                    @item.Connector
+        <div class="row pb-1">
+            @if(@item.FieldSelected != true)
+            {
+                <select id="select-@item.Id" @onchange="SetFieldName" class="form-control">
+                    @foreach (string field in fieldNames)
+                    {
+                        <option value="@item.Id|@field">
+                            @field.ToString()
+                        </option>
+                    }
+                </select>
+            }
+            else
+            {
+                <span><button class="btn bi bi-trash pe-2" @onclick="() => RemoveItem(item)"></button> @item.FieldName</span>
+                <div class="row pb-2">
+                    <InputText @bind-Value="item.Value" class="form-control" />
                 </div>
-            <div class="row">
-                <button class="btn bi bi-trash p-2" @onclick="() => RemoveItem(item)"></button>
-            </div>
+            }
         </div>
     }
-    </div>
 </div>
-<button onclick="@AddItem">Add</button>
+<button class="btn" @onclick="ClearFilter">Clear Filter</button>
 
