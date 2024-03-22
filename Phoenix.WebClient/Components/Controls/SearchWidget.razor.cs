@@ -2,23 +2,17 @@
 {
     public partial class SearchWidget
     {
-        protected List<SearchModel> searchModel { get; set; }
+        private List<SearchModel> searchModel { get; set; }
+        private bool AddFilterVisible { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            searchModel = [new SearchModel { Connector = ConnectorType.And, Id = Guid.NewGuid() }];
+            searchModel = new List<SearchModel>();
+            AddFilterVisible = true;
         }
 
         protected List<string> fieldNames = new List<string> { "Please select", "ProductCode", "Description", "Size", "Date" };
 
-        public void AddItem()
-        {
-            if (searchModel != null)
-            {
-                searchModel.Add(new SearchModel { Connector = ConnectorType.And, Id = Guid.NewGuid() });
-            }
-            StateHasChanged();
-        }
         public void RemoveItem(SearchModel item)
         {
             searchModel.Remove(item);
@@ -38,12 +32,18 @@
                 model.FieldName = codes[1];
                 model.FieldSelected = true;
             }
-            AddItem();
+            AddFilterVisible = true;
             StateHasChanged();
         }
         private void ClearFilter(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
         {
-            searchModel = [new SearchModel { Connector = ConnectorType.And, Id = Guid.NewGuid() }];
+            searchModel = new List<SearchModel>();
+        }
+        private void AddFilter(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+        {
+            searchModel.Add(new SearchModel { Connector = ConnectorType.And, Id = Guid.NewGuid() });
+            AddFilterVisible = false;
+            StateHasChanged();
         }
     }
 }
