@@ -102,6 +102,21 @@ namespace Phoenix.Services
 
         public async Task<WarehouseModel?> FindWarehouse(Dictionary<string,string> searchTerms, string genericSearch)
         {
+            var predicate = PredicateBuilder.True<BranchSupplierGroup>();
+            predicate = predicate.And(x => x.GroupType == "M");
+
+            if (searchObject?.GroupName != null)
+                predicate = predicate.And(x => x.GroupName.Contains(searchObject.GroupName));
+
+            if (searchObject?.SupplierCode != null)
+                predicate = predicate.And(x => x.SupplierCode == searchObject.SupplierCode);
+
+            return (await _branchSupplierGroupRepository.Get(
+                CreateReturnSession(),
+                predicate,
+                BranchSupplierGroupSpecification.Get,
+                0, 0)).ToList();
+
             _repository.fin
             var warehouse = new Warehouse
             {
