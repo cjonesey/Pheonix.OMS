@@ -1,27 +1,26 @@
 ﻿@page "/warehouses"
 @rendermode InteractiveServer
-
+@inherits ListPageBase
 
 <StandardListButtons
     MenuName="Warehouses"
     NewInvoked="NewWarehouse"
+    DeleteInvoked="Delete"
     ExportInvoked="ExportToExcel">    
 </StandardListButtons>
-
-<ConfirmDialogue Show="showConfirmDialogue" OnCancel="CancelDelete" OnOk="HandleDelete">
+<ConfirmDialogue Show="showConfirmDialogue" OnCancel="CancelDeleteDialogue" OnOk="DeleteConfirmed">
     <h3>
-        Do you want to delete this Warehouse?
+        Do you want to delete this record?
     </h3>
 </ConfirmDialogue>
-<Toast></Toast>
 
+<Toast></Toast>
 <div class="row" @onclick="HideContext">
     <div class="col-2 border-end border-dark vh-100">
         <SearchWidget></SearchWidget>
     </div>
     <div class="col-md">
-        <Toast></Toast>
-        <table class="table table-responsive table">
+        <table class="table table-responsive table-striped table-hover">
             <thead>
                 <tr>
                     <th></th>

@@ -100,6 +100,28 @@ namespace Phoenix.Services
             return await GetWarehouseById(warehouse.Id);
         }
 
+        public async Task<WarehouseModel?> FindWarehouse(Dictionary<string,string> searchTerms, string genericSearch)
+        {
+            _repository.fin
+            var warehouse = new Warehouse
+            {
+                Id = warehouseModel.Id,
+                Name = warehouseModel.Name,
+                Street1 = warehouseModel.Street1,
+                Street2 = warehouseModel.Street2,
+                City = warehouseModel.City,
+                County = warehouseModel.County,
+                Postcode = warehouseModel.Postcode,
+                CountryId = warehouseModel.CountryId,
+                CountryCode = warehouseModel.CountryCode,
+                ChangeCheck = warehouseModel.ChangeCheck,
+                CreatedOn = warehouseModel.CreatedOn,
+                ModifiedOn = warehouseModel.ModifiedOn
+            };
+            await _repository.Update(warehouse, warehouse.Id);
+            return await GetWarehouseById(warehouse.Id);
+        }
+
         public async Task DeleteWarehouse(int warehouseID) => await _repository.DeleteByID(warehouseID);
 
     }

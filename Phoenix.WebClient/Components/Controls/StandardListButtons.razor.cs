@@ -30,5 +30,9 @@ namespace Phoenix.WebClient.Components.Controls
         {
             await ExportInvoked.InvokeAsync();
         }
+        private async void HandleDelete(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+        {
+            await DeleteInvoked.InvokeAsync();
+        }
     }
 }

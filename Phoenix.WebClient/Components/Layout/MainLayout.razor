@@ -6,34 +6,45 @@
     </div>
  *@
 
-    <main style="background-color:#E9F1FA">
+    <main style="background-color:#f8f9fa;">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="javascript:void(0)">Logo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <a class="navbar-brand" href="javascript:void(0)"><img src="/images/Bunzl.svg" height="48px;" alt="Bunzl Logo" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#settingsNavBar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="mynavbar">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="javascript:void(0)">Link</a>
-                        </li>
-                    </ul>
+                <div class="collapse navbar-collapse justify-content-end" id="settingsNavBar">
                     <form class="d-flex">
                         <input class="form-control me-2" type="text" placeholder="Search">
-                        <button class="btn btn-primary" type="button">Search</button>
+                        <button class="btn btn-primary bi bi-search" type="button"></button>
                     </form>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle bi bi-person" style="color:white;" href="#" role="button" data-bs-toggle="dropdown" id="accountSettings"></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#" id="myAccount"
+                                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="My Account">My Acount</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="" Match="NavLinkMatch.All"
+                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings" id="companySetting">
+                                <span class="bi bi-gear" style="color:white;" aria-hidden="true"></span>
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="#" Match="NavLinkMatch.All"
+                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select Branch" id="branchSettings">
+                                <span class="bi bi-building" style="color:white;" aria-hidden="true"></span>
+                            </NavLink>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
         <NavMenu></NavMenu>
-
         <article class="content px-4">
             @Body
         </article>
