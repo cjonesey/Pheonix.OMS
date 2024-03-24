@@ -10,7 +10,7 @@
                 <ul class="navbar-nav me-auto pr-1">
                     <InputText @bind-Value="_searchText" class="search-bar" placeholder="Search" />
                     <li class="nav-item">
-                        <button class="btn bi bi-search"> Search</button>
+                        <button class="btn bi bi-search" @onclick="HandleSearch"> Search</button>
                     </li>
                     <li class="nav-item" onclick="@HandleNew">
                         <button class="btn bi bi-plus" > New</button>

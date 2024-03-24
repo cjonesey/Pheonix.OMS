@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Phoenix.Services.Helpers
 {
@@ -50,7 +52,7 @@ namespace Phoenix.Services.Helpers
         static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
             // zip parameters (map from parameters of second to parameters of first)    
-            var map = first.Parameters
+            Dictionary<ParameterExpression, ParameterExpression> map = first.Parameters
                 .Select((f, i) => new { f, s = second.Parameters[i] })
                 .ToDictionary(p => p.s, p => p.f);
 
@@ -86,6 +88,8 @@ namespace Phoenix.Services.Helpers
 
                 return base.VisitParameter(p);
             }
+
+
         }
     }
 }

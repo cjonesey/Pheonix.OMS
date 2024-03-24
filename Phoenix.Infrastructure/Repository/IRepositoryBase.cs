@@ -11,6 +11,7 @@ namespace Phoenix.Infrastructure
         Task DeleteByID(int id);
         Task<TEntity?> Get(int id);
         Task<List<TEntity>?> Get(Expression<Func<TEntity, bool>> filter);
+        List<TEntity>? Get(Func<TEntity, bool> condition);
         Task<IEnumerable<TEntity>> GetAll();
         Task Update(TEntity entity, int id);
     }

@@ -1,4 +1,13 @@
 ﻿
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Phoenix.Models.Shared;
+using Phoenix.Services.Helpers;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Security.AccessControl;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
+
 namespace Phoenix.Services
 {
     public class WarehouseService : IWarehouseService
@@ -41,21 +50,7 @@ namespace Phoenix.Services
             var warehouse = await _repository.Get(id);
             if (warehouse != null)
             {
-                return new WarehouseModel
-                {
-                    Id = warehouse.Id,
-                    Name = warehouse.Name,
-                    Street1 = warehouse.Street1,
-                    Street2 = warehouse.Street2,
-                    City = warehouse.City,
-                    County = warehouse.County,
-                    Postcode = warehouse.Postcode,
-                    CountryId = warehouse.CountryId,
-                    CountryCode = warehouse.CountryCode,
-                    ChangeCheck = warehouse.ChangeCheck,
-                    CreatedOn = warehouse.CreatedOn,
-                    ModifiedOn = warehouse.ModifiedOn
-                };
+                return MapWarehouse(warehouse);
             }
             return default;
         }
@@ -100,44 +95,87 @@ namespace Phoenix.Services
             return await GetWarehouseById(warehouse.Id);
         }
 
-        public async Task<WarehouseModel?> FindWarehouse(Dictionary<string,string> searchTerms, string genericSearch)
+        public async Task<List<WarehouseModel>?> FindWarehouse(Dictionary<string,string> searchTerms, string genericSearch)
         {
-            var predicate = PredicateBuilder.True<BranchSupplierGroup>();
-            predicate = predicate.And(x => x.GroupType == "M");
+            var predicate = PredicateBuilder.True<Warehouse>();
+            //predicate = predicate.And(predicate => predicate.Name.Contains(genericSearch));
+            var warehouseProps = typeof(Warehouse).GetProperties();
 
-            if (searchObject?.GroupName != null)
-                predicate = predicate.And(x => x.GroupName.Contains(searchObject.GroupName));
 
-            if (searchObject?.SupplierCode != null)
-                predicate = predicate.And(x => x.SupplierCode == searchObject.SupplierCode);
+            List<WarehouseModel> warehousesModel = new();
+            List<PropertyInfo> differences = new List<PropertyInfo>();
+            Expression<Func<Warehouse, bool>> condition = default;
 
-            return (await _branchSupplierGroupRepository.Get(
-                CreateReturnSession(),
-                predicate,
-                BranchSupplierGroupSpecification.Get,
-                0, 0)).ToList();
-
-            _repository.fin
-            var warehouse = new Warehouse
+            try
             {
-                Id = warehouseModel.Id,
-                Name = warehouseModel.Name,
-                Street1 = warehouseModel.Street1,
-                Street2 = warehouseModel.Street2,
-                City = warehouseModel.City,
-                County = warehouseModel.County,
-                Postcode = warehouseModel.Postcode,
-                CountryId = warehouseModel.CountryId,
-                CountryCode = warehouseModel.CountryCode,
-                ChangeCheck = warehouseModel.ChangeCheck,
-                CreatedOn = warehouseModel.CreatedOn,
-                ModifiedOn = warehouseModel.ModifiedOn
-            };
-            await _repository.Update(warehouse, warehouse.Id);
-            return await GetWarehouseById(warehouse.Id);
+                if (searchTerms != null)
+                {
+                    foreach (var (key, value) in searchTerms)
+                    {
+                        var prop = warehouseProps.Where(x => x.Name == key).FirstOrDefault();
+                        if (prop == null)
+                        {
+                            throw new Exception("Property does not exist");
+                        }
+
+                        switch (key)
+                        {
+                            case "Name":
+                            case "Street1":
+                                condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
+                                    key,
+                                    value,
+                                    PredicateGenericHelper.GetMethod(prop.PropertyType, "Contains"));
+                                break;
+                            case "Postcode":
+                                condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
+                                    key,
+                                    value,
+                                    PredicateGenericHelper.GetMethod(prop.PropertyType, "StartsWith"));
+                                break;
+                        }
+                        predicate = predicate.And(condition!);
+                    }
+                    var warehouses = await _repository.Get(predicate);
+                    if (warehouses != null && warehouses.Any())
+                    {
+                        warehouses.ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in FindWarehouse");
+            }
+            //condition1 =
+            //    Expression.Lambda<Func<Warehouse, bool>>(
+            //        Expression.Equal(
+            //            Expression.Property(param, key),
+            //            Expression.Constant(value, typeof(string))
+            //        ),
+            //        param
+            //    );
+            return warehousesModel;
         }
+
+
 
         public async Task DeleteWarehouse(int warehouseID) => await _repository.DeleteByID(warehouseID);
 
+        private static WarehouseModel MapWarehouse(Warehouse warehouse) => new WarehouseModel
+        {
+            Id = warehouse.Id,
+            Name = warehouse.Name,
+            Street1 = warehouse.Street1,
+            Street2 = warehouse.Street2,
+            City = warehouse.City,
+            County = warehouse.County,
+            Postcode = warehouse.Postcode,
+            CountryId = warehouse.CountryId,
+            CountryCode = warehouse.CountryCode,
+            ChangeCheck = warehouse.ChangeCheck,
+            CreatedOn = warehouse.CreatedOn,
+            ModifiedOn = warehouse.ModifiedOn
+        };
     }
 }

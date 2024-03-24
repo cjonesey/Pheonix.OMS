@@ -64,6 +64,11 @@ namespace Phoenix.Infrastructure
         {
             return await _context.Set<TEntity>().Where(filter).ToListAsync();
         }
+        public List<TEntity>? Get(
+            Func<TEntity, bool> condition)
+        {
+            return _context.Set<TEntity>().Where(condition).ToList();
+        }
 
         public virtual async Task<IEnumerable<TEntity>> GetAll()
         {

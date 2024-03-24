@@ -9,7 +9,8 @@ namespace Phoenix.WebClient.Components.Pages
         [Inject] IWarehouseService? _warehouseService { get; set; }
         private string cdkOverlayPane;
         private WarehouseModel? _currentWarehouse;
-
+        
+        private string _searchText = string.Empty;
  
         protected override async Task OnInitializedAsync()
         {
@@ -84,6 +85,18 @@ namespace Phoenix.WebClient.Components.Pages
             toastService.ShowToast("Record Deleted", ToastLevel.Warning);
             Thread.Sleep(3000);
             await InvokeAsync(StateHasChanged);
+        }
+
+        protected async Task Search()
+        {
+            Dictionary<string, string> searchTerms = new();
+            searchTerms.Add("Postcode", "NR1");
+            searchTerms.Add("Name", _searchText);
+            var warehouses = await _warehouseService.FindWarehouse(searchTerms, string.Empty);
+            if (warehouses != null && warehouses.Any())
+            {
+                _warehouses = warehouses.ToList();
+            }
         }
     }
 }
