@@ -6,14 +6,14 @@ namespace Phoenix.WebClient.Components.Controls
     {
         [Parameter] public string MenuName { get; set; } = "List Page";
         protected string _searchText { get; set; } = string.Empty;
-        [Parameter] public EventCallback SearchInvoked { get; set; }
+        [Parameter] public EventCallback<string> SearchInvoked { get; set; }
         [Parameter] public EventCallback DeleteInvoked { get; set; }
         [Parameter] public EventCallback NewInvoked { get; set; }
         [Parameter] public EventCallback ExportInvoked { get; set; }
 
         public async void HandleSearch()
         {
-            await SearchInvoked.InvokeAsync();
+            await SearchInvoked.InvokeAsync(_searchText);
         }
 
         public async void HandleCancel()

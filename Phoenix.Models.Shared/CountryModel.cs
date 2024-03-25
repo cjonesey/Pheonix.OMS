@@ -9,5 +9,6 @@ namespace Phoenix.Models.Shared
         [Required, MaxLength(2)] public string ISOCode2 { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public virtual IList<WarehouseModel> Warehouses { get; set; } = new List<WarehouseModel>();
+        public override object Identifier() => Id;
     }
 }

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.AccessControl;
 using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
+using Phoenix.Domain;
 
 namespace Phoenix.Services
 {
@@ -24,23 +25,12 @@ namespace Phoenix.Services
         }
         public async Task<List<WarehouseModel>?> GetAllWarehouses()
         {
+            List<WarehouseModel> warehousesModel = new();
             var warehouses = await _repository.GetAll();
             if (warehouses != null && warehouses.Any())
             {
-                return warehouses.Select(w => new WarehouseModel
-                {
-                    Id = w.Id,
-                    Name = w.Name,
-                    Street1 = w.Street1,
-                    Street2 = w.Street2,
-                    City = w.City,
-                    Postcode = w.Postcode,
-                    CountryId = w.CountryId,
-                    CountryCode = w.CountryCode,
-                    ChangeCheck = w.ChangeCheck,
-                    CreatedOn = w.CreatedOn,
-                    ModifiedOn = w.ModifiedOn
-                }).ToList();
+                warehouses.ToList().ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
+                return warehousesModel;
             }
             return default;
         }
@@ -98,49 +88,57 @@ namespace Phoenix.Services
         public async Task<List<WarehouseModel>?> FindWarehouse(Dictionary<string,string> searchTerms, string genericSearch)
         {
             var predicate = PredicateBuilder.True<Warehouse>();
-            //predicate = predicate.And(predicate => predicate.Name.Contains(genericSearch));
             var warehouseProps = typeof(Warehouse).GetProperties();
-
-
+            var warehouseSearchProps = typeof(WarehouseModel).GetProperties();
+            List<Warehouse>? warehouses = new();
             List<WarehouseModel> warehousesModel = new();
             List<PropertyInfo> differences = new List<PropertyInfo>();
             Expression<Func<Warehouse, bool>> condition = default;
+            bool predicateApplied = false;
 
             try
             {
                 if (searchTerms != null)
                 {
-                    foreach (var (key, value) in searchTerms)
+                    foreach (var (key, value) in searchTerms
+                        .Where(x => !string.IsNullOrEmpty(x.Key) && !string.IsNullOrEmpty(x.Value)).ToList())
                     {
-                        var prop = warehouseProps.Where(x => x.Name == key).FirstOrDefault();
+                        //Check that the value is in the warehouse entity
+                        PropertyInfo? prop = warehouseProps.Where(x => x.Name == key).FirstOrDefault();
                         if (prop == null)
                         {
                             throw new Exception("Property does not exist");
                         }
-
-                        switch (key)
-                        {
-                            case "Name":
-                            case "Street1":
-                                condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
-                                    key,
-                                    value,
-                                    PredicateGenericHelper.GetMethod(prop.PropertyType, "Contains"));
-                                break;
-                            case "Postcode":
-                                condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
-                                    key,
-                                    value,
-                                    PredicateGenericHelper.GetMethod(prop.PropertyType, "StartsWith"));
-                                break;
-                        }
+                        //Check that the value is in the WarehouseModel 
+                        PropertyInfo? propSearch = warehouseSearchProps.Where(x => x.Name == key).FirstOrDefault();
+                        BaseValues.SearchType matchType = PredicateGenericHelper.GetIDForPassedInObject(propSearch);                       
+                        condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
+                            key,
+                            value,
+                            PredicateGenericHelper.GetMethod(prop.PropertyType, matchType),
+                            prop.PropertyType);
                         predicate = predicate.And(condition!);
+                        predicateApplied = true;
                     }
-                    var warehouses = await _repository.Get(predicate);
-                    if (warehouses != null && warehouses.Any())
-                    {
-                        warehouses.ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
-                    }
+                }
+                if (!string.IsNullOrEmpty(genericSearch))
+                {
+                    predicate = predicate.And(x => x.Name.Contains(genericSearch));
+                    predicateApplied = true;
+                }
+
+                if (predicateApplied)
+                {
+                    warehouses = await _repository.Get(predicate);
+                }
+                else
+                {
+                    warehouses = (await _repository.GetAll()).ToList();
+                }
+
+                if (warehouses != null)
+                {
+                    warehouses.ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
                 }
             }
             catch (Exception ex)

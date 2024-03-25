@@ -8,10 +8,10 @@
             @if(@item.FieldSelected != true)
             {
                 <select id="select-@item.Id" @onchange="SetFieldName" class="form-control">
-                    @foreach (string field in fieldNames)
+                    @foreach (var field in lookupValues)
                     {
-                        <option value="@item.Id|@field">
-                            @field.ToString()
+                        <option value="@item.Id|@field.Item1">
+                            @field.Item2.ToString()
                         </option>
                     }
                 </select>
@@ -28,5 +28,6 @@
         <button class="btn btn-link" @onclick="AddFilter">+ Add Filter..</button>
     }
 </div>
+<button class="btn btn-link" @onclick="ApplyFilter">Apply Filter(s)</button>
 <button class="btn btn-link" @onclick="ClearFilter">Clear Filter(s)</button>
 

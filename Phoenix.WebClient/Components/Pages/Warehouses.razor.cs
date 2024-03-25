@@ -8,13 +8,13 @@ namespace Phoenix.WebClient.Components.Pages
         protected List<WarehouseModel> _warehouses = new List<WarehouseModel>();
         [Inject] IWarehouseService? _warehouseService { get; set; }
         private string cdkOverlayPane;
-        private WarehouseModel? _currentWarehouse;
-        
-        private string _searchText = string.Empty;
+        private WarehouseModel? _currentWarehouse;        
+        private List<SearchModel> _searchModels = new();
+        private string _searchTerm = string.Empty; 
  
         protected override async Task OnInitializedAsync()
         {
-            var warehouses = await _warehouseService.GetAllWarehouses();
+            var warehouses = await _warehouseService!.GetAllWarehouses();
             if (warehouses != null && warehouses.Any())
             {
                 _warehouses = warehouses.ToList();
@@ -79,7 +79,7 @@ namespace Phoenix.WebClient.Components.Pages
             if (_currentWarehouse == null)
                 return;
 
-            await _warehouseService.DeleteWarehouse(_currentWarehouse!.Id);
+            await _warehouseService!.DeleteWarehouse(_currentWarehouse!.Id);
             _warehouses.Remove(_currentWarehouse!);
             _currentWarehouse = null;
             toastService.ShowToast("Record Deleted", ToastLevel.Warning);
@@ -87,12 +87,37 @@ namespace Phoenix.WebClient.Components.Pages
             await InvokeAsync(StateHasChanged);
         }
 
-        protected async Task Search()
+        protected async Task ApplySearchFromWidget(List<SearchModel> searchModels)
+        {
+            if (searchModels == null || !searchModels.Any())
+                return;
+            _searchModels = searchModels;
+            await ApplySearch();
+        }
+
+        protected void ClearSearchFromWidget()
+        {
+            _searchModels.Clear();
+            _searchTerm = string.Empty;
+            StateHasChanged();
+        }
+
+        protected async Task ApplySearchFromRibbon(string searchTerm)
+        {
+            if(string.IsNullOrEmpty(searchTerm))
+                return;
+            _searchTerm = searchTerm;
+            await ApplySearch();
+        }
+
+        private async Task ApplySearch()
         {
             Dictionary<string, string> searchTerms = new();
-            searchTerms.Add("Postcode", "NR1");
-            searchTerms.Add("Name", _searchText);
-            var warehouses = await _warehouseService.FindWarehouse(searchTerms, string.Empty);
+            foreach (var item in _searchModels)
+            {
+                searchTerms.Add(item.FieldName, item.Value);
+            }
+            var warehouses = await _warehouseService.FindWarehouse(searchTerms, _searchTerm);
             if (warehouses != null && warehouses.Any())
             {
                 _warehouses = warehouses.ToList();
