@@ -1,4 +1,5 @@
 ﻿@page "/warehouses"
+@using Microsoft.AspNetCore.Components.QuickGrid
 @rendermode InteractiveServer
 @inherits ListPageBase
 
@@ -19,51 +20,33 @@
 <Toast></Toast>
 
 <div class="row" @onclick="HideContext">
-    @if (_warehouses != null && _warehouses.Any())
-    {
-        <div class="col-2 border-end border-dark vh-100">
+    <div class="col-2 border-end border-dark filter-control">
         <SearchWidget 
             SearchInvoked=ApplySearchFromWidget 
             ClearSearchInvoked="ClearSearchFromWidget"
-            SearchProps="_warehouses.FirstOrDefault()!.SearchProps()">
+            SearchProps="_warehouse.SearchProps()">
         </SearchWidget>
     </div>
     <div class="col-md">
-        <table class="table table-responsive table-striped table-hover">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Id</th>
-                    <th width="1%"></th>
-                    <th>Name</th>
-                    <th>Street1</th>
-                    <th>Postcode</th>
-                    <th>Country</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in _warehouses)
-                {
-                    <tr @onclick="() => SetCurrentRow(item)">
-                        <td><input type="checkbox" class="listPage_checkBox"></td>
-                        <td><a href="/warehouseedit/@item.Id">@item.Id</a></td>
-                        <td>
-
-                            <button class="btn bi bi-three-dots-vertical p-1"
-                                    type="button" id="contextMenuButton" 
-                                    @onclick="ContextMenu">
-                            </button>
-                        </td>
-                        <td>@item.Name</td>
-                        <td>@item.Street1</td>
-                        <td>@item.Postcode</td>
-                        <td>@item.CountryCode</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="grid" tabindex="-1">
+            <QuickGrid id="quickGrid" ItemsProvider="warehousesProvider" @ref="warehouseGrid" Virtualize="true" Class="table table-striped table-hover vh-100">
+                <TemplateColumn Title="Id">
+                    <a href="/warehouseedit/@context.Id">@context.Id</a>
+                </TemplateColumn>
+                <TemplateColumn>
+                    <button class="btn bi bi-three-dots-vertical p-1"
+                            type="button" id="contextMenuButton"
+                            @onclick="ContextMenu"
+                            @onfocus="() => SetCurrentRow(context)">
+                    </button>
+                </TemplateColumn>
+                <PropertyColumn Property="@(c => c.Name)" />
+                <PropertyColumn Property="@(c => c.Street1)" />
+                <PropertyColumn Property="@(c => c.Postcode)" />
+                <PropertyColumn Title="Country" Property="@(c => c.CountryCode)" />
+            </QuickGrid>
+        </div>
     </div>
-    }
     @if(_contextMenuVisible)
     {
         <div id="cdkOverlay" class="border border-primary rounded-1" style="@cdkOverlayPane">
@@ -72,13 +55,10 @@
                     <button class="btn bi bi-x-square pe-3" @onclick="Edit"> Edit</button>
                 </li>
                 <li class="nav-item1">
-                    <button class="btn bi bi-three-dots-vertical pe-3" onclick="javascript:makeListCheckBoxVisible()"> Select</button>
-                </li>
-                <li class="nav-item1">
-                    <button class="btn bi bi-filetype-xls pe-3" @onclick="Delete"> Delete</button>
+                    <button class="btn bi bi-trash" @onclick="Delete"> Delete</button>
                 </li>
             </ul>
         </div>
     }
-</div>
 
+</div>

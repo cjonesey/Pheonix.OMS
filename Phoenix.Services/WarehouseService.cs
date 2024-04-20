@@ -23,6 +23,21 @@ namespace Phoenix.Services
             _repository = repository;
 
         }
+
+
+        public async Task<List<WarehouseModel>> GetAllWarehouses(int page = 0, int pageSize = 0)
+        {
+            List<WarehouseModel> warehousesModel = new();
+            var warehouses = await _repository.Get(null, null, pageSize, page);
+            if (warehouses != null && warehouses.Any())
+            {
+                warehouses.ToList().ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
+                return warehousesModel;
+            }
+            return new List<WarehouseModel>();
+        }
+
+
         public async Task<List<WarehouseModel>?> GetAllWarehouses()
         {
             List<WarehouseModel> warehousesModel = new();
@@ -85,7 +100,11 @@ namespace Phoenix.Services
             return await GetWarehouseById(warehouse.Id);
         }
 
-        public async Task<List<WarehouseModel>?> FindWarehouse(Dictionary<string,string> searchTerms, string genericSearch)
+        public async Task<List<WarehouseModel>> FindWarehouse(Dictionary<string,string> searchTerms, 
+            string genericSearch,
+            string sortBy,
+            int skip = 0,
+            int take = 0)
         {
             var predicate = PredicateBuilder.True<Warehouse>();
             var warehouseProps = typeof(Warehouse).GetProperties();
@@ -98,7 +117,7 @@ namespace Phoenix.Services
 
             try
             {
-                if (searchTerms != null)
+                if (searchTerms != null && searchTerms.Any())
                 {
                     foreach (var (key, value) in searchTerms
                         .Where(x => !string.IsNullOrEmpty(x.Key) && !string.IsNullOrEmpty(x.Value)).ToList())
@@ -109,14 +128,24 @@ namespace Phoenix.Services
                         {
                             throw new Exception("Property does not exist");
                         }
-                        //Check that the value is in the WarehouseModel 
-                        PropertyInfo? propSearch = warehouseSearchProps.Where(x => x.Name == key).FirstOrDefault();
-                        BaseValues.SearchType matchType = PredicateGenericHelper.GetIDForPassedInObject(propSearch);                       
-                        condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
-                            key,
-                            value,
-                            PredicateGenericHelper.GetMethod(prop.PropertyType, matchType),
-                            prop.PropertyType);
+
+                        PropertyInfo? propSearch1 = warehouseSearchProps.Where(x => x.Name == key).FirstOrDefault();
+                        BaseValues.SearchType matchType = PredicateGenericHelper.GetSearchTypeForObject(propSearch1);
+
+                        //Check whether the value contains the | character - only works for equals
+                        if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
+                        {
+                            condition = PredicateGenericHelper.CreateExpressionCallFromList(key, value, prop);
+                        }
+                        else
+                        {
+                            PropertyInfo? propSearch = warehouseSearchProps.Where(x => x.Name == key).FirstOrDefault();
+                            condition = PredicateGenericHelper.CreateExpressionCall<Warehouse>(
+                                key,
+                                value,
+                                PredicateGenericHelper.GetMethod(prop.PropertyType, matchType),
+                                prop.PropertyType);
+                        }
                         predicate = predicate.And(condition!);
                         predicateApplied = true;
                     }
@@ -127,32 +156,27 @@ namespace Phoenix.Services
                     predicateApplied = true;
                 }
 
+                if (take == 0) { take = 20; }
+
+                List<Warehouse>? result = null;
                 if (predicateApplied)
                 {
-                    warehouses = await _repository.Get(predicate);
+                    result  = await _repository.Get(predicate, x => x.OrderByDescending(x => x.Id), take, skip);
                 }
                 else
                 {
-                    warehouses = (await _repository.GetAll()).ToList();
+                    result = await _repository.Get(null, null, take, skip);
                 }
 
-                if (warehouses != null)
-                {
-                    warehouses.ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
-                }
+                if (result == null)
+                    result = new List<Warehouse>();
+
+                result.ForEach(warehouseModel => warehousesModel.Add(MapWarehouse(warehouseModel)));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in FindWarehouse");
             }
-            //condition1 =
-            //    Expression.Lambda<Func<Warehouse, bool>>(
-            //        Expression.Equal(
-            //            Expression.Property(param, key),
-            //            Expression.Constant(value, typeof(string))
-            //        ),
-            //        param
-            //    );
             return warehousesModel;
         }
 

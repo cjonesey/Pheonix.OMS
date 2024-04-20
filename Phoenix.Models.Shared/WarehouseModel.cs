@@ -5,7 +5,7 @@ namespace Phoenix.Models.Shared
 {
     public class WarehouseModel: BaseModel
     {
-        public int Id { get; set; }
+        [Searchable(SearchType = BaseValues.SearchType.Equals)] public int Id { get; set; }
         [Required, MaxLength(30), Description("Name"), Searchable(SearchType = BaseValues.SearchType.Contains)] public string Name { get; set; } = string.Empty;        
         [Required, MaxLength(30), Description("Street 1"), Searchable(SearchType = BaseValues.SearchType.Contains)]  public string Street1 { get; set; } = string.Empty;        
         [MaxLength(30), Description("Street 2"), Searchable(SearchType = BaseValues.SearchType.Contains)] public string Street2 { get; set; } = string.Empty;

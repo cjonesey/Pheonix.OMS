@@ -60,10 +60,22 @@ namespace Phoenix.Infrastructure
         }
 
         public virtual async Task<List<TEntity>?> Get(
-            Expression<Func<TEntity, bool>> filter)
+            Expression<Func<TEntity, bool>>? filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            int pageSize = 0,
+            int page = 0)
         {
-            return await _context.Set<TEntity>().Where(filter).ToListAsync();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+            if (filter != null)
+                query = query.Where(filter);
+            if (orderBy != null)
+                query = orderBy(query);
+            if (pageSize != 0)
+                query = query.Skip(page).Take(pageSize);
+            return await query.ToListAsync();
         }
+
+
         public List<TEntity>? Get(
             Func<TEntity, bool> condition)
         {

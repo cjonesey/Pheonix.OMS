@@ -114,13 +114,15 @@ h1:focus {
 .search-bar {
     display: inline;
     padding: .05rem .05rem;
+    margin-top: 0.125rem;
+    margin-bottom: 0.125rem;
     font-size: 1rem;
     line-height: 0.5;
     background-clip: padding-box;
     border-left: 1px solid #ced4da;
     border-right: 1px solid #ced4da;
-    border-top: none;
-    border-bottom: none;
+    border-top: 1px solid #ced4da;
+    border-bottom: 1px solid #ced4da;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -271,26 +273,8 @@ h1:focus {
 
 /*sl;dksldf;*/
 .filter-control {
-    display: inline;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: .25rem;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    height: calc(100vh - 10rem);
 }
-/* End Local Customisation */
-
-
-
 .cdk-overlay-pane {
     position: absolute;
     pointer-events: auto;
@@ -300,3 +284,50 @@ h1:focus {
     max-width: 100%;
     max-height: 100%;
 }
+
+
+/* Fix height and enable scrolling */
+.grid {
+    height: calc(100vh - 20rem);
+    overflow-y: auto;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    vertical-align: top;
+    border-color: #dee2e6;
+}
+
+
+/* For virtualized grids, it's essential that all rows have the same known height */
+::deep tr {
+    height: 30px;
+    border-bottom: 0.5px solid silver;
+}
+
+::deep tbody td {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 0;
+    text-overflow: ellipsis;
+}
+
+table thead,
+table tfoot {
+    position: sticky;
+    background-color: var(--bs-blue);
+    color: white;
+}
+
+table thead {
+    inset-block-start: 0; /* "top" */
+}
+
+table tfoot {
+    inset-block-end: 0; /* "bottom" */
+}
+/* End Local Customisation */
+
+
+
+
+
