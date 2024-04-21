@@ -1,0 +1,23 @@
+﻿@* Edit Page for CustomerPostingGroupModel *@
+@page "/customerpostinggroupedit/{id:int?}"
+@using Phoenix.Domain
+@rendermode InteractiveServer
+<h3>Cusomer Posting Group</h3>
+
+ <div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <label for="customerPostingGroup">Customer Posting Group</label>
+            <input type="text" class="form-control" id="customerPostingGroup" placeholder="Customer Posting Group" @bind="customerPostingGroupModel.Id" />
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" placeholder="Description" @bind="customerPostingGroupModel.Name" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int? id { get; set; }
+    private CustomerPostingGroupModel customerPostingGroupModel = new CustomerPostingGroupModel();
+}

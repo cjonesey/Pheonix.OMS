@@ -1,0 +1,20 @@
+﻿@using Phoenix.Domain
+@* Edit Page for CustomerModel *@
+@page "/customeredit/{id:int?}"
+<h3>Customer Edit</h3>
+<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <label for="customer">Customer</label>
+            <input type="text" class="form-control" id="customer" placeholder="Customer" @bind="customerModel.Id" />
+        </div>
+        <div class="form-group">
+            <label for="description">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Description" @bind="customerModel.Name" />
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public int? id { get; set; }
+    private CustomerModel customerModel = new CustomerModel();
+}

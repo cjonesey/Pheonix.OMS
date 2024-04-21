@@ -29,6 +29,12 @@ namespace Phoenix.Infrastructure
         public DbSet<SalesParameters> SalesParameters { get; set; } = null!;
         public DbSet<Supplier> Suppliers { get; set; } = null!;
         public DbSet<Warehouse> Warehouses { get; set; } = null!;
+        public DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
+        public DbSet<PaymentTerms> PaymentTerms { get; set; } = null!;
+        public DbSet<VATPostingGroup> VATPostingGroups { get; set; } = null!;
+        public DbSet<CustomerPostingGroup> CustomerPostingGroups { get; set; } = null!;
+        public DbSet<CustomerPriceGroup> CustomerPriceGroups { get; set; } = null!;
+
 
         public override int SaveChanges()
         {
@@ -57,6 +63,26 @@ namespace Phoenix.Infrastructure
                 .HasMany(e => e.CustomerAddresses)
                 .WithOne(e => e.Customer)
                 .HasForeignKey(e => e.CustomerId)
+                .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<CustomerPostingGroup>()
+                .HasMany(e => e.Customers)
+                .WithOne(e => e.CustomerPostingGroup)
+                .HasForeignKey(e => e.CustomerPostingGroupID)
+                .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<CustomerPriceGroup>()
+                .HasMany(e => e.Customers)
+                .WithOne(e => e.CustomerPriceGroup)
+                .HasForeignKey(e => e.CustomerPriceGroupID)
+                .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<PaymentMethod>()
+                .HasMany(e => e.Customers)
+                .WithOne(e => e.PaymentMethod)
+                .HasForeignKey(e => e.PaymentMethodID)
+                .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<VATPostingGroup>()
+                .HasMany(e => e.Customers)
+                .WithOne(e => e.VATPostingGroup)
+                .HasForeignKey(e => e.VATPostingGroupID)
                 .HasPrincipalKey(e => e.Id);
             modelBuilder.Entity<Warehouse>()
                 .HasOne(e => e.Country)
