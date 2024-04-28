@@ -1,0 +1,83 @@
+﻿@using Phoenix.Domain
+<h3>CustomerEditComponent</h3>
+
+<EditForm Model="@customerModel">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-12">
+        <div class="form-group">
+            <label for="customer">Customer</label>
+            <input type="text" class="form-control" id="customer" placeholder="Customer" @bind="customerModel.Id" />
+        </div>
+        <div class="form-group">
+            <label for="description">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Description" @bind="customerModel.Name" />
+        </div>
+        <div class="form-group">
+            <label for="Street1">Street1</label>
+            <input type="text" class="form-control" id="Street1" placeholder="Street1" @bind="customerModel.Street1" />
+        </div>
+        <div class="form-group">
+            <label for="Street2">Street2</label>
+            <input type="text" class="form-control" id="Street2" placeholder="Street2" @bind="customerModel.Street2" />
+        </div>
+        <div class="form-group">
+            <label for="City">City</label>
+            <input type="text" class="form-control" id="City" placeholder="City" @bind="customerModel.City" />
+        </div>
+        <div class="form-group">
+            <label for="County">County</label>
+            <input type="text" class="form-control" id="County" placeholder="County" @bind="customerModel.County" />
+        </div>
+        <div class="form-group">
+            <label for="Postcode">Postcode</label>
+            <input type="text" class="form-control" id="Postcode" placeholder="Postcode" @bind="customerModel.Postcode" />
+        </div>
+@*         public int CountryId { get; set; }
+        [Required, MaxLength(3)] public string CountryCode { get; set; } = string.Empty;
+ *@
+        <div class="form-group">
+            <label for="Phone">Phone</label>
+            <input type="text" class="form-control" id="Phone" placeholder="Phone" @bind="customerModel.Phone" />
+        </div>
+@*         [Required, MaxLength(30)] public string Phone { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        [Required, MaxLength(255)] public string Website { get; set; } = string.Empty;
+        [Required, MaxLength(100)] public string ContactPerson { get; set; } = string.Empty; //To be updated
+
+        //Invoicing
+        [Required, MaxLength(30)] public string VATRegistrationNumber { get; set; } = string.Empty;
+        [Required, MaxLength(40)] public string GLN { get; set; } = string.Empty;
+        [Required, MaxLength(20)] public string CompanyRegistrationNumber { get; set; } = string.Empty;
+        [Required, MaxLength(30)] public string EORIRegistrationNumber { get; set; } = string.Empty;
+
+        [Required] public VATPostingGroupModel VATPostingGroup { get; set; }
+        [Required] public CustomerPostingGroupModel CustomerPostingGroup { get; set; }
+        public CustomerPriceGroupModel CustomerPriceGroup { get; set; }
+
+        public bool ConsolidateInvoices { get; set; } = false;
+ 
+        public decimal PrepaymentPercentage { get; set; } = 0;
+        public decimal CreditLimit { get; set; } = 0;
+        public short CashApplicationMethod { get; set; } = 0;
+
+        public PaymentTermsModel PaymentTerms { get; set; }
+
+        ////Payment Method
+        //public PaymentMethodModel PaymentMethod { get; set; }
+
+        //Shipping
+        public short ReserveStock { get; set; } = 0;
+        public short ShipComplete { get; set; } = 0;
+        public short ShowPricesOnSalesDocuments { get; set; } = 0;
+        *@
+    </div>
+    
+
+</EditForm>
+
+
+@code {
+    [Parameter] public int? id { get; set; }
+    private CustomerModel customerModel = new CustomerModel();
+}

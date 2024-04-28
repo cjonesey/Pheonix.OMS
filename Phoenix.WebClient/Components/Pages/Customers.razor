@@ -1,13 +1,13 @@
-﻿@page "/countries/"
+﻿@page "/customers/"
+@using Phoenix.Domain
 @rendermode InteractiveServer
-@inherits ListPageTemplate<CountryModel>
+@inherits ListPageTemplate<CustomerModel>
 
-<StandardListButtons
-    MenuName="Warehouses"
-    SearchInvoked="HandleSearchFromRibbon"
-    NewInvoked="HandleNew"
-    DeleteInvoked="HandleDelete"
-    RefreshInvoked="HandleRefresh">    
+<StandardListButtons MenuName="Warehouses"
+                     SearchInvoked="HandleSearchFromRibbon"
+                     NewInvoked="HandleNew"
+                     DeleteInvoked="HandleDelete"
+                     RefreshInvoked="HandleRefresh">
 </StandardListButtons>
 
 <ConfirmDialogue Show="showConfirmDialogue" OnCancel="CancelDeleteDialogue" OnOk="DeleteConfirmed">
@@ -20,10 +20,9 @@
 
 <div class="row" @onclick="HideContext">
     <div class="col-2 border-end border-dark filter-control">
-        <SearchWidget 
-            SearchInvoked=ApplySearchFromWidget 
-            ClearSearchInvoked="ClearSearchFromWidget"
-            SearchProps="_model.SearchProps()">
+        <SearchWidget SearchInvoked=ApplySearchFromWidget
+                      ClearSearchInvoked="ClearSearchFromWidget"
+                      SearchProps="_model.SearchProps()">
         </SearchWidget>
     </div>
     <div class="col-md">
@@ -33,15 +32,17 @@
                     <a href="javascript:void(0);" @onclick="() => EditRecord(context)" aria-label="Edit @context.Id">@context.Id</a>
                 </TemplateColumn>
                 <TemplateColumn>
-                     <button class="btn bi bi-three-dots-vertical p-1"
+                    <button class="btn bi bi-three-dots-vertical p-1"
                             type="button" id="contextMenuButton"
                             @onclick="ContextMenu"
                             @onfocus="() => SetCurrentRow(context)">
                     </button>
                 </TemplateColumn>
-                <PropertyColumn Property="@(c => c.Code)" />
-                <PropertyColumn Title="ISO Code" Property="@(c => c.ISOCode2)" />
                 <PropertyColumn Property="@(c => c.Name)" />
+                <PropertyColumn Property="@(c => c.Street1)" />
+                <PropertyColumn Property="@(c => c.City)" />
+                <PropertyColumn Property="@(c => c.Postcode)" />
+                <PropertyColumn Property="@(c => c.CountryCode)" />
             </QuickGrid>
         </div>
     </div>
@@ -64,7 +65,7 @@
 {
     <div class="overlay">
         <CountryEditComponent id="@_currentModel.Id"
-                    CloseInvoked="HandleClose">
+                              CloseInvoked="HandleClose">
         </CountryEditComponent>
     </div>
 }

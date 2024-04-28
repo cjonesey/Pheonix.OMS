@@ -13,6 +13,7 @@ builder.Services.AddDbContextFactory<PhoenixDBContext>(options =>
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IWarehouseService, WarehouseService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ToastService>();
 // Add services to the container.
 builder.Services.AddRazorComponents()
