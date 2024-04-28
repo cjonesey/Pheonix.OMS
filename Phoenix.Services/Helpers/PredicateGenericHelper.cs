@@ -61,15 +61,15 @@ namespace Phoenix.Services.Helpers
             return searchType;
         }
 
-        public static Expression<Func<Warehouse, bool>> CreateExpressionCallFromList(
+        public static Expression<Func<T, bool>> CreateExpressionCallFromList<T>(
             string key,
             string value,
-            PropertyInfo? prop)
+            PropertyInfo? prop) where T : BaseEntity
         {
             if (prop.PropertyType == typeof(int))
             {
                 var ids = PredicateGenericHelper.ConvertList<int>(value);
-                return PredicateGenericHelper.CreateExpressionCall<Warehouse, int>(
+                return PredicateGenericHelper.CreateExpressionCall<T, int>(
                         key,
                         ids,
                         PredicateGenericHelper.GetMethod(ids.GetType(), BaseValues.SearchType.Contains),
@@ -78,7 +78,7 @@ namespace Phoenix.Services.Helpers
             if (prop.PropertyType == typeof(DateTime))
             {
                 var ids = PredicateGenericHelper.ConvertList<DateTime>(value);
-                return PredicateGenericHelper.CreateExpressionCall<Warehouse, DateTime>(
+                return PredicateGenericHelper.CreateExpressionCall<T, DateTime>(
                         key,
                         ids,
                         PredicateGenericHelper.GetMethod(ids.GetType(), BaseValues.SearchType.Contains),
@@ -86,7 +86,7 @@ namespace Phoenix.Services.Helpers
 
             }
             List<string> idString = value.Split('|').ToList();
-            return PredicateGenericHelper.CreateExpressionCall<Warehouse, string>(
+            return PredicateGenericHelper.CreateExpressionCall<T, string>(
                     key,
                     idString,
                     PredicateGenericHelper.GetMethod(idString.GetType(), BaseValues.SearchType.Contains),

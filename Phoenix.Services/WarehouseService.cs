@@ -135,7 +135,7 @@ namespace Phoenix.Services
                         //Check whether the value contains the | character - only works for equals
                         if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
                         {
-                            condition = PredicateGenericHelper.CreateExpressionCallFromList(key, value, prop);
+                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Warehouse>(key, value, prop);
                         }
                         else
                         {

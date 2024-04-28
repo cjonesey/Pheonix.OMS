@@ -1,46 +1,70 @@
 ﻿@page "/countries"
-<h3>Countries</h3>
-<div>
-    <nav class="navbar navbar-expand" aria-label="Country Toolbar">
-        <div class="container-fluid border-bottom border-top">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#countryToolbar" aria-controls="countryToolbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+@using Microsoft.AspNetCore.Components.QuickGrid
+@rendermode InteractiveServer
+@inherits ListPageTemplate<CountryModel>
+<StandardListButtons
+    MenuName="Warehouses"
+    SearchInvoked="HandleSearchFromRibbon"
+    NewInvoked="HandleNew"
+    DeleteInvoked="HandleDelete"
+    RefreshInvoked="HandleRefresh">    
+</StandardListButtons>
 
-            <div class="collapse navbar-collapse" id="countryToolbar">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <button class="btn bi bi-search p-2"> Search</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn bi bi-plus p-2"> New</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn bi bi-x-square p-2"> Delete</button>
-                    </li>
-                </ul>
-            </div>
+<ConfirmDialogue Show="showConfirmDialogue" OnCancel="CancelDeleteDialogue" OnOk="DeleteConfirmed">
+    <h3>
+        Do you want to delete this record?
+    </h3>
+</ConfirmDialogue>
+
+<Toast></Toast>
+
+<div class="row" @onclick="HideContext">
+    <div class="col-2 border-end border-dark filter-control">
+        <SearchWidget 
+            SearchInvoked=ApplySearchFromWidget 
+            ClearSearchInvoked="ClearSearchFromWidget"
+            SearchProps="_model.SearchProps()">
+        </SearchWidget>
+    </div>
+    <div class="col-md">
+        <div class="grid" tabindex="-1">
+            <QuickGrid id="quickGrid" ItemsProvider="gridProvider" @ref="gridView" Virtualize="true" Class="table table-striped table-hover vh-100">
+                <TemplateColumn Title="Id">
+                    <a href="javascript:void(0);" @onclick="() => EditRecord(context)" aria-label="Edit @context.Id">@context.Id</a>
+                </TemplateColumn>
+                <TemplateColumn>
+                     <button class="btn bi bi-three-dots-vertical p-1"
+                            type="button" id="contextMenuButton"
+                            @onclick="ContextMenu"
+                            @onfocus="() => SetCurrentRow(context)">
+                    </button>
+                </TemplateColumn>
+                <PropertyColumn Property="@(c => c.Code)" />
+                <PropertyColumn Title="ISO Code" Property="@(c => c.ISOCode2)" />
+                <PropertyColumn Property="@(c => c.Name)" />
+            </QuickGrid>
         </div>
-    </nav>
+    </div>
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>ISO Code2</th>
-            <th>Code</th>
-            <th>Country</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in _countries)
-        {
-            <tr>
-                <td><a href="/countryedit/@item.Id">@item.Id</a></td>
-                <td>@item.ISOCode2</td>
-                <td>@item.Code</td>
-                <td>@item.Name</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (_contextMenuVisible)
+{
+    <div id="cdkOverlay" class="border border-primary rounded-1" style="@cdkOverlayPane">
+        <ul class="navbar-nav">
+            <li class="nav-item1">
+                <button class="btn bi bi-x-square pe-3" @onclick="Edit"> Edit</button>
+            </li>
+            <li class="nav-item1">
+                <button class="btn bi bi-trash" @onclick="HandleDelete"> Delete</button>
+            </li>
+        </ul>
+    </div>
+}
+
+@if (_editMode && _currentModel != null)
+{
+    <div class="overlay">
+        <CountryEditComponent id="@_currentModel.Id"
+                    CloseInvoked="HandleClose">
+        </CountryEditComponent>
+    </div>
+}

@@ -5,10 +5,11 @@
 
 <StandardListButtons
     MenuName="Warehouses"
-    SearchInvoked="ApplySearchFromRibbon"
+    SearchInvoked="HandleSearchFromRibbon"
     NewInvoked="NewWarehouse"
-    DeleteInvoked="Delete"
-    ExportInvoked="ExportToExcel">    
+    DeleteInvoked="HandleDelete"
+    ExportInvoked="ExportToExcel"
+    RefreshInvoked="HandleRefresh">    
 </StandardListButtons>
 
 <ConfirmDialogue Show="showConfirmDialogue" OnCancel="CancelDeleteDialogue" OnOk="DeleteConfirmed">
@@ -31,7 +32,7 @@
         <div class="grid" tabindex="-1">
             <QuickGrid id="quickGrid" ItemsProvider="warehousesProvider" @ref="warehouseGrid" Virtualize="true" Class="table table-striped table-hover vh-100">
                 <TemplateColumn Title="Id">
-                    <a href="/warehouseedit/@context.Id">@context.Id</a>
+                    <a href="javascript:void(0);" @onclick="() => EditRecord(context)" aria-label="Edit @context.Id">@context.Id</a>
                 </TemplateColumn>
                 <TemplateColumn>
                     <button class="btn bi bi-three-dots-vertical p-1"
@@ -55,10 +56,19 @@
                     <button class="btn bi bi-x-square pe-3" @onclick="Edit"> Edit</button>
                 </li>
                 <li class="nav-item1">
-                    <button class="btn bi bi-trash" @onclick="Delete"> Delete</button>
+                    <button class="btn bi bi-trash" @onclick="HandleDelete"> Delete</button>
                 </li>
             </ul>
         </div>
     }
 
+    @if(_editMode && _currentWarehouse != null)
+    {
+        <div class="overlay">
+            <WarehouseEditComponent 
+                id="@_currentWarehouse.Id"
+                CloseInvoked="HandleClose">
+            </WarehouseEditComponent>
+        </div>
+    }
 </div>

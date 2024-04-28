@@ -1,34 +1,15 @@
-﻿@page "/countryedit/{id}"
-<h4><a href="#" class="backicon bi bi-arrow-left"></a> Country Card</h4>
-@if (Model != null)
-{
-    <div class="h3" role="heading" aria-level="2">@Model.Code - @Model.Name</div>
-    <StandardCRUDButtons></StandardCRUDButtons>
-}
-@if (Model != null)
-{
-<div class="h4 pt-2">General</div>
-<div class="card-body border-3 border-top">
-        <EditForm Model="Model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit"  FormName="CountryForm">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <InputNumber @bind-Value="Model!.Id" id="countryId" hidden />
-            <InputDate @bind-Value="Model!.CreatedOn" id="countryCreatedOn" hidden />
-            <InputDate @bind-Value="Model!.ModifiedOn" id="countryModifiedOn" hidden />
-            <div class="form-floating mb-3 mt-3">
-                <InputText class="form-control"  @bind-Value="Model!.Code" id="countryCode" />
-                <label for="countryCode">Code</label>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <InputText class="form-control" @bind-Value="Model!.Name" id="countryName" />
-                <label for="countryName">Name</label>
-            </div>
-            <div class="form-floating mb-3 mt-3">
-                <InputText class="form-control" @bind-Value="Model!.ISOCode2" id="isoCode2" />
-                <label for="isoCode2">ISO Code 2</label>
-            </div>
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <button class="btn btn-danger" type="reset">Cancel</button>
-        </EditForm>
-</div>
+﻿@page "/countryedit/{id:int?}"
+@rendermode InteractiveServer
+
+<WarehouseEditComponent id="@id"
+        CloseInvoked="HandleClose">
+</WarehouseEditComponent>
+
+@code {
+    [Parameter] public int? id { get; set; }
+    [Inject] public NavigationManager? NavigationManager { get; set; }
+    private async Task HandleClose()
+    {
+        NavigationManager!.NavigateTo("/countries");
+    }
 }

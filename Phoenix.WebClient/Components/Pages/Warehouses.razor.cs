@@ -1,11 +1,6 @@
-﻿using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Microsoft.AspNetCore.Components.QuickGrid;
+﻿using Microsoft.AspNetCore.Components.QuickGrid;
 using Phoenix.WebClient.Components.Base;
-using System;
 using System.Text;
-using System.Text.Json;
-using static System.Net.WebRequestMethods;
 
 namespace Phoenix.WebClient.Components.Pages
 {
@@ -33,6 +28,8 @@ namespace Phoenix.WebClient.Components.Pages
 
         private string cdkOverlayPane;
         private string sortBy = string.Empty;
+
+        private bool _editMode = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -93,7 +90,7 @@ namespace Phoenix.WebClient.Components.Pages
         {
             _currentWarehouse = warehouse;
         }
-        protected override void Delete()
+        protected override void HandleDelete()
         {
             if (_currentWarehouse == null)
                 return;
@@ -104,8 +101,22 @@ namespace Phoenix.WebClient.Components.Pages
 		{
             if (_currentWarehouse == null)
                 return;
-            _navigationManager.NavigateTo($"/warehouseedit/{_currentWarehouse!.Id}");
+            _editMode = true;
+            //_navigationManager.NavigateTo($"/warehouseedit/{_currentWarehouse!.Id}");
 		}
+
+        private void EditRecord(WarehouseModel warehouseModel)
+        {
+            _currentWarehouse = warehouseModel;
+            _editMode = true;
+        }
+
+
+        protected async Task HandleClose()
+        {
+            _editMode = false;
+            await InvokeAsync(StateHasChanged);
+        }
 
 
         /// <summary>
@@ -145,7 +156,14 @@ namespace Phoenix.WebClient.Components.Pages
             }
         }
 
-        protected async Task ApplySearchFromRibbon(string searchTerm)
+        protected async Task HandleRefresh()
+        {
+            if (warehouseGrid == null)
+                return;
+            await warehouseGrid.RefreshDataAsync();
+        }
+
+        protected async Task HandleSearchFromRibbon(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm) || warehouseGrid == null)
                 return;

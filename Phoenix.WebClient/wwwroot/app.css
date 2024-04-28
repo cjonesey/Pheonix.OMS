@@ -314,7 +314,7 @@ h1:focus {
 table thead,
 table tfoot {
     position: sticky;
-    background-color: var(--bs-blue);
+    background-color: var(--bs-gray-600);
     color: white;
 }
 
@@ -324,6 +324,15 @@ table thead {
 
 table tfoot {
     inset-block-end: 0; /* "bottom" */
+}
+
+.overlay {
+    position: absolute;
+    top: 5rem;
+    left: 1rem;
+    height: calc(100vh - 5rem);
+    width: 99%;
+    background: var(--bs-white);
 }
 /* End Local Customisation */
 

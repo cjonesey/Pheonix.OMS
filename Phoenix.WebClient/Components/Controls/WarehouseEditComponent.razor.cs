@@ -1,16 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-namespace Phoenix.WebClient.Components.Pages
+﻿namespace Phoenix.WebClient.Components.Controls
 {
-    public partial class WarehouseEdit
+    public partial class WarehouseEditComponent
     {
-        [Inject] IJSRuntime js { get; set; }
-        [Inject] public NavigationManager? NavigationManager { get; set; }
         [Parameter] public int? id { get; set; }
-        [SupplyParameterFromForm] protected WarehouseModel _warehouse { get; set; }
-        [Inject] protected IWarehouseService _warehouseService { get; set; }
-        [Inject] public ToastService toastService { get; set; }
-        [Inject] public ILogger<WarehouseEdit> _logger { get; set; }
+        [SupplyParameterFromForm] protected WarehouseModel? _warehouse { get; set; } 
+        [Inject] protected IWarehouseService? _warehouseService { get; set; }
+        [Inject] public ToastService? toastService { get; set; }
+        [Inject] public ILogger<WarehouseEditComponent> _logger { get; set; }        
+        [Parameter] public EventCallback CloseInvoked { get; set; } //Should add in a delete method to update the grid??
 
         public string searchString = "";
 
@@ -29,7 +26,7 @@ namespace Phoenix.WebClient.Components.Pages
 
                 if (id.HasValue && id.Value != 0)
                 {
-                    var warehouse = await _warehouseService.GetWarehouseById(id.Value);
+                    var warehouse = await _warehouseService!.GetWarehouseById(id.Value);
                     if (warehouse != null)
                     {
                         MapWarehouse(warehouse);
@@ -42,7 +39,7 @@ namespace Phoenix.WebClient.Components.Pages
             dataIsLoaded = true;
         }
 
-        private void MapWarehouse(WarehouseModel? warehouse)
+        private void MapWarehouse(WarehouseModel warehouse)
         {
             _warehouse = new WarehouseModel
             {
@@ -72,10 +69,12 @@ namespace Phoenix.WebClient.Components.Pages
         private void HandleValidationRequested(object? sender,
             ValidationRequestedEventArgs args)
         {
+            if (_warehouse == null)
+                return;
             messageStore?.Clear();
             ValidationContext context = new ValidationContext(_warehouse, null, null);
             ICollection<ValidationResult>? validationResults = new List<ValidationResult>();
-            if(!Validator.TryValidateObject(_warehouse, context, validationResults, true))
+            if (!Validator.TryValidateObject(_warehouse, context, validationResults, true))
             {
                 foreach (var result in validationResults)
                 {
@@ -86,7 +85,8 @@ namespace Phoenix.WebClient.Components.Pages
 
         void SelectCountry(CountryModel? country)
         {
-            if (country == null) return;
+            if (_warehouse == null || country == null)
+                return;
             _warehouse.CountryId = country.Id;
             _warehouse.CountryCode = country.Code;
             countryLookup = false;
@@ -103,6 +103,9 @@ namespace Phoenix.WebClient.Components.Pages
 
         private async Task OnValidSubmit()
         {
+            if (_warehouse == null)
+                return; 
+
             WarehouseModel? warehouse = default;
             try
             {
@@ -112,44 +115,36 @@ namespace Phoenix.WebClient.Components.Pages
                 }
                 else
                 {
-                    warehouse = await _warehouseService.UpdateWarehouse(_warehouse);
+                    warehouse = await _warehouseService!.UpdateWarehouse(_warehouse);
                 }
 
                 if (warehouse != null)
                 {
                     MapWarehouse(warehouse);
-                    toastService.ShowToast("Record Saved", ToastLevel.Success);
+                    toastService!.ShowToast("Record Saved", ToastLevel.Success);
                     Thread.Sleep(3000);
-                    NavigationManager!.NavigateTo("/Warehouses");
+                    //NavigationManager!.NavigateTo("/Warehouses");
+                    await CloseInvoked.InvokeAsync();
                     return;
                 }
-                toastService.ShowToast("Record Not saved", ToastLevel.Error);
+                toastService!.ShowToast("Record Not saved", ToastLevel.Error);
                 return;
             }
-			catch (Exception ex)
-			{
-				_logger.LogError(ex?.ToString());
-				toastService.ShowToast("Record Not saved", ToastLevel.Error);
-			}
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex?.ToString());
+                toastService!.ShowToast("Record Not saved", ToastLevel.Error);
+            }
         }
 
-        private void OnCancel()
+        private async Task OnCancel()
         {
-            NavigationManager!.NavigateTo("/warehouses");
+            await CloseInvoked.InvokeAsync();
         }
         private void OnNew()
         {
             _warehouse = new WarehouseModel();
         }
-
-
-        private async void NavigateBack()
-        {
-            await js.InvokeVoidAsync("history.back");
-        }
-
 
         private void OpenConfirmDialog()
         {
@@ -163,12 +158,20 @@ namespace Phoenix.WebClient.Components.Pages
 
         protected async Task HandleDelete()
         {
+            if (_warehouse == null)
+                return;
             showConfirmDialogue = false;
             await InvokeAsync(StateHasChanged);
-            await _warehouseService.DeleteWarehouse(_warehouse.Id);
-            toastService.ShowToast("Record Deleted", ToastLevel.Warning);
+            await _warehouseService!.DeleteWarehouse(_warehouse.Id);
+            toastService!.ShowToast("Record Deleted", ToastLevel.Warning);
             Thread.Sleep(3000);
-            NavigationManager!.NavigateTo("/Warehouses");
+            await CloseInvoked.InvokeAsync();
+            //NavigationManager!.NavigateTo("/Warehouses");
         }
+        private async Task Back(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+        {
+            await CloseInvoked.InvokeAsync();
+        }
+
     }
 }

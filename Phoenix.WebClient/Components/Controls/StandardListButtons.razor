@@ -12,11 +12,14 @@
                     <li class="nav-item">
                         <button class="btn bi bi-search" @onclick="HandleSearch"> Search</button>
                     </li>
-                    <li class="nav-item" onclick="@HandleNew">
+                    <li class="nav-item" @onclick="HandleNew">
                         <button class="btn bi bi-plus" > New</button>
                     </li>
                     <li class="nav-item">
                         <button class="btn bi bi-x-square" @onclick="HandleDelete"> Delete</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn bi bi-arrow-clockwise" @onclick="HandleRefresh"> Refresh</button>
                     </li>
                     <li class="nav-item">
                         <button class="btn bi bi-filetype-xls" @onclick="HandleExport"> Export</button>
