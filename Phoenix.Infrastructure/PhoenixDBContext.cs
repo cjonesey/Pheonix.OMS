@@ -30,7 +30,7 @@ namespace Phoenix.Infrastructure
         public DbSet<Supplier> Suppliers { get; set; } = null!;
         public DbSet<Warehouse> Warehouses { get; set; } = null!;
         public DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
-        public DbSet<PaymentTerms> PaymentTerms { get; set; } = null!;
+        public DbSet<PaymentTerm> PaymentTerms { get; set; } = null!;
         public DbSet<VATPostingGroup> VATPostingGroups { get; set; } = null!;
         public DbSet<CustomerPostingGroup> CustomerPostingGroups { get; set; } = null!;
         public DbSet<CustomerPriceGroup> CustomerPriceGroups { get; set; } = null!;

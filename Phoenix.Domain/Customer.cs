@@ -43,7 +43,7 @@ namespace Phoenix.Domain
 
         //Payment Terms
         [Required] public int PaymentTermsID { get; set; }
-        public PaymentTerms PaymentTerms { get; set; }
+        public PaymentTerm PaymentTerms { get; set; }
 
         //Payment Method
         [Required] public int PaymentMethodID { get; set; }

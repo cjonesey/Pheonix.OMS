@@ -1,4 +1,5 @@
-﻿using Phoenix.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using Phoenix.Domain;
 
 namespace Phoenix.Services
 {
@@ -46,6 +47,7 @@ namespace Phoenix.Services
             }
             return default;
         }
+
 
         /// <summary>
         /// Add customer

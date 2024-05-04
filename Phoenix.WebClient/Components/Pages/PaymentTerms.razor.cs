@@ -4,36 +4,37 @@ using Phoenix.WebClient.Components.Base;
 
 namespace Phoenix.WebClient.Components.Pages
 {
-    public partial class Customers : ListPageTemplate<CustomerModel>
+	public partial class PaymentTerms : ListPageTemplate<PaymentTermModel>
     {
-        [Inject] ICustomerService? _customerService { get; set; }
-        object Data { get; set; }
+        [Inject] IGenericService<PaymentTerm, PaymentTermModel> ? _dataService { get; set; }
+        List<PaymentTermModel> _paymentTerms; 
 
         protected override async Task OnInitializedAsync()
         {
-            _model = new CustomerModel();
-            int rowCount = 0;
+            _model = new PaymentTermModel();
+            _paymentTerms = new List<PaymentTermModel>();
+            _paymentTerms = await _dataService!.GetAll(SimpleMapper.MapPaymentTermToPaymentTermModel);
+            //int rowCount = 0;
             //gridProvider = async req =>
             //{
             //    var searchTerms = AddSearchTerms();
-            //    var customers = await _customerService!.FindCustomer(searchTerms, _searchTerm, "", req.StartIndex, req.Count ?? 0);
-            //    if (customers == null)
-            //        customers = new List<CustomerModel>();
+            //    var countries = await _dataService!.FindCountry(searchTerms, _searchTerm, "", req.StartIndex, req.Count ?? 0);
+            //    if (countries == null)
+            //        countries = new List<CountryModel>();
 
-            //    if (customers!.Count() == req.Count)
+            //    if (countries!.Count() == req.Count)
             //    {
             //        rowCount = req.StartIndex + req.Count.Value + req.Count ?? 0;
             //    }
             //    else
             //    {
-            //        rowCount = req.StartIndex + customers!.Count;
+            //        rowCount = req.StartIndex + countries!.Count;
             //    }
 
             //    return GridItemsProviderResult.From(
-            //        items: customers,
+            //        items: countries,
             //        totalItemCount: rowCount);
             //};
-            Data = await _customerService!.GetAllCustomers();
         }
 
         protected override async Task DeleteConfirmed()
@@ -51,7 +52,8 @@ namespace Phoenix.WebClient.Components.Pages
 
         protected void HandleNew()
         {
-            _navigationManager!.NavigateTo("/CustomerEdit");
+            _navigationManager!.NavigateTo("/CountryEdit");
         }
+
     }
 }

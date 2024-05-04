@@ -35,7 +35,7 @@ namespace Phoenix.Domain
         public decimal CreditLimit { get; set; } = 0;
         public short CashApplicationMethod { get; set; } = 0;
 
-        public PaymentTermsModel PaymentTerms { get; set; }
+        public PaymentTermModel PaymentTerms { get; set; }
 
         ////Payment Method
         //public PaymentMethodModel PaymentMethod { get; set; }

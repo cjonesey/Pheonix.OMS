@@ -25,7 +25,17 @@
                       SearchProps="_model.SearchProps()">
         </SearchWidget>
     </div>
-    <div class="col-md">
+    <DxGrid Data="@Data">
+        <Columns>
+            <DxGridDataColumn FieldName="Name"/>
+            <DxGridDataColumn FieldName="Street1" />
+            <DxGridDataColumn FieldName="City" />
+            <DxGridDataColumn FieldName="Postcode" />
+            <DxGridDataColumn FieldName="CountryCode" />
+        </Columns>
+    </DxGrid>
+
+    @* <div class="col-md">
         <div class="grid" tabindex="-1">
             <QuickGrid id="quickGrid" ItemsProvider="gridProvider" @ref="gridView" Virtualize="true" Class="table table-striped table-hover vh-100">
                 <TemplateColumn Title="Id">
@@ -45,7 +55,7 @@
                 <PropertyColumn Property="@(c => c.CountryCode)" />
             </QuickGrid>
         </div>
-    </div>
+    </div> *@
 </div>
 @if (_contextMenuVisible)
 {

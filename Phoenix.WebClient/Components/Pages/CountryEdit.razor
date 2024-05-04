@@ -1,9 +1,9 @@
 ﻿@page "/countryedit/{id:int?}"
 @rendermode InteractiveServer
 
-<WarehouseEditComponent id="@id"
+<CountryEditComponent id="@id"
         CloseInvoked="HandleClose">
-</WarehouseEditComponent>
+</CountryEditComponent>
 
 @code {
     [Parameter] public int? id { get; set; }

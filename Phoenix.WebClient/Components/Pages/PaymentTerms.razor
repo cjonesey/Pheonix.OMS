@@ -1,0 +1,18 @@
+﻿@page "/paymentterms/"
+@rendermode InteractiveServer
+@inherits ListPageTemplate<PaymentTermModel>
+
+<h3>PaymentTerms</h3>
+@if(_paymentTerms != null && _paymentTerms.Any())
+{
+	<table>
+		@foreach(var item in _paymentTerms)
+		{
+			<tr>
+				<td>@item.Id</td>
+				<td>@item.Name</td>
+				<td>@item.PaymentDays</td>
+			</tr>
+		}
+	</table>
+}

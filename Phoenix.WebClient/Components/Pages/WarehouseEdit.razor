@@ -5,10 +5,12 @@
     id="@id"
     CloseInvoked="HandleClose">
 </WarehouseEditComponent>
+<DxCalendar @bind-SelectedDate="@SelectedDate" />
 
 @code {
     [Parameter] public int? id { get; set; }
     [Inject] public NavigationManager? NavigationManager { get; set; }
+    DateTime SelectedDate { get; set; } = DateTime.Now;
     private async Task HandleClose()
     {
         NavigationManager!.NavigateTo("/warehouses");
