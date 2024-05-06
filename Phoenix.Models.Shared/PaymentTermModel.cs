@@ -1,5 +1,7 @@
 ﻿using Phoenix.Models.Shared;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Phoenix.Models.Shared
 {
@@ -9,8 +11,9 @@ namespace Phoenix.Models.Shared
 	public class PaymentTermModel :  BaseModel
     { 
         public int Id { get; set; }
-        [Required, MaxLength(40)] public string Name { get; set; } = string.Empty;
-        [Required, MaxLength(10)] public string PaymentDays { get; set; } = string.Empty;
+		[Searchable(SearchType = BaseValues.SearchType.StartsWith), Required, MaxLength(40)] public string Name { get; set; } = string.Empty;
+		[Searchable(SearchType = BaseValues.SearchType.Contains), Required, MaxLength(10)] public string PaymentDays { get; set; } = string.Empty;
         public override object Identifier() => Id;
-    }
+		public override string NameField() => nameof(Name);
+	}
 }

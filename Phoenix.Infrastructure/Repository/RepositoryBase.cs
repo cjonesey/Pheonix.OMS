@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Phoenix.Shared;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices.Marshalling;
+
 
 namespace Phoenix.Infrastructure
 {
-    public class RepositoryBase<TEntity> : 
+	public class RepositoryBase<TEntity> : 
         IDisposable,
         IRepositoryBase<TEntity> where TEntity : class
     {
@@ -68,15 +68,45 @@ namespace Phoenix.Infrastructure
             IQueryable<TEntity> query = _context.Set<TEntity>();
             if (filter != null)
                 query = query.Where(filter);
+
+            //Need to order the query by passing a predicate
             if (orderBy != null)
                 query = orderBy(query);
+            var eachItem = Expression.Parameter(typeof(TEntity), "item");
+            var propertyToOrderByExpression = Expression.Property(eachItem, "PaymentDays");
+
             if (pageSize != 0)
                 query = query.Skip(page).Take(pageSize);
             return await query.ToListAsync();
         }
 
 
-        public List<TEntity>? Get(
+		public virtual async Task<List<TEntity>?> GetExpanded(
+	        Expression<Func<TEntity, bool>>? filter = null,
+			Dictionary<string, byte>? orderBy = null,
+			int pageSize = 0,
+	        int page = 0)
+		{
+			IQueryable<TEntity> query = _context.Set<TEntity>();
+			if (filter != null)
+				query = query.Where(filter);
+
+            //Need to order the query by passing a predicate
+            if (orderBy != null && orderBy.Any())
+            {
+                foreach (var field in orderBy.Where(x => x.Value != 0))
+                {
+					query = query.OrderByTerm<TEntity>(field.Key, field.Value == 2 ? true : false);
+				}
+
+			}
+			if (pageSize != 0)
+				query = query.Skip(page).Take(pageSize);
+			return await query.ToListAsync();
+		}
+
+
+		public List<TEntity>? Get(
             Func<TEntity, bool> condition)
         {
             return _context.Set<TEntity>().Where(condition).ToList();

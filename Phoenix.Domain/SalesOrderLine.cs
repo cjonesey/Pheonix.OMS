@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -22,5 +23,6 @@ namespace Phoenix.Domain
         [Precision(18, 2)] public decimal LineTotal { get; set; } = 0;
         [Precision(18, 2)] public decimal Discount { get; set; } = 0;
         [Precision(18, 2)] public decimal Tax { get; set; } = 0;
-    }
+		
+	}
 }

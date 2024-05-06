@@ -50,5 +50,10 @@ namespace Phoenix.WebClient.Components.Pages
         {
             _navigationManager!.NavigateTo("/CountryEdit");
         }
+
+        public override Task LoadData()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

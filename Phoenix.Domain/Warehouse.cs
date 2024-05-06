@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -14,5 +15,5 @@ namespace Phoenix.Domain
         [Required] public int CountryId { get; set; }
         public Country? Country { get; } 
         [Required, MaxLength(3)] public string CountryCode { get; set; } = string.Empty;
-    }
+	}
 }

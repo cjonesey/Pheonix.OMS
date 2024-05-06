@@ -1,4 +1,6 @@
-﻿namespace Phoenix.Domain
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Phoenix.Domain
 {
     public class SalesDeliveryLine : BaseEntity
     {
@@ -12,5 +14,6 @@
         public int Quantity { get; set; } = 0;
         public int QuantityShipped { get; set; } = 0;
         public int QuantityBackOrdered { get; set; } = 0;
-    }
+		
+	}
 }

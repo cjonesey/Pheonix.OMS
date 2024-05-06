@@ -17,6 +17,10 @@ namespace Phoenix.Infrastructure
 
         List<TEntity>? Get(Func<TEntity, bool> condition);
         Task<IEnumerable<TEntity>> GetAll();
-        Task Update(TEntity entity, int id);
+		Task<List<TEntity>?> GetExpanded(
+            Expression<Func<TEntity, bool>>? filter = null,
+            Dictionary<string, byte>? orderBy = null,
+            int pageSize = 0, int page = 0);
+		Task Update(TEntity entity, int id);
     }
 }

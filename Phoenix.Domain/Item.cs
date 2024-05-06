@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -14,6 +15,6 @@ namespace Phoenix.Domain
         [Precision(18, 2)] public decimal CostPrice { get; set; }
         public int VATProductId { get; set; }
         public string VATCode { get; set; } = string.Empty;
-
-    }
+		
+	}
 }

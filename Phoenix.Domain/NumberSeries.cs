@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -12,5 +13,5 @@ namespace Phoenix.Domain
         public int Length { get; set; }
         public int MaxNumber { get; set; }
 
-    }
+	}
 }

@@ -48,6 +48,8 @@ namespace Phoenix.Domain
         //public ICollection<CustomerAddress> CustomerAddresses { get; set; } = new List<CustomerAddress>();
 
         public override object Identifier() => Id;
+		public override string NameField() => nameof(Name);
 
-    }
+
+	}
 }

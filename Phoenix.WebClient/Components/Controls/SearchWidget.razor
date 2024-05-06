@@ -19,7 +19,7 @@
             else
             {
                 <span><button class="btn bi bi-trash pe-2" @onclick="() => RemoveItem(item)"></button> @item.FieldName</span>
-                <InputText @bind-Value="item.Value" class="form-control pb-2" />
+                <InputText @bind-Value="item.Value" class="form-control pb-2" autocomplete='off' />
             }
         </div>
     }

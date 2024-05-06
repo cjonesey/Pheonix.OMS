@@ -10,5 +10,7 @@ namespace Phoenix.Models.Shared
         [Searchable(SearchType = BaseValues.SearchType.Contains)] public string Name { get; set; } = string.Empty;
         public virtual IList<WarehouseModel> Warehouses { get; set; } = new List<WarehouseModel>();
         public override object Identifier() => Id;
-    }
+		public override string NameField() => nameof(Name);
+
+	}
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 
 namespace Phoenix.WebClient.Components.Base
@@ -31,6 +33,15 @@ namespace Phoenix.WebClient.Components.Base
         protected string _searchTerm = string.Empty;
         protected string cdkOverlayPane;
         protected string sortBy = string.Empty;
+
+        protected int _pageSize = 50;
+        protected int _maxRecords = 5000;
+        protected int _recordsLoaded = 0;
+        protected bool _navigationRequired = true;
+        protected List<T> _ModelValues = new List<T>();
+
+        //Sort Model
+        protected Dictionary<string, byte> _sortModel = new(); 
 
         protected void SetCurrentRow(T model)
         {
@@ -107,6 +118,7 @@ namespace Phoenix.WebClient.Components.Base
             _searchTerm = searchTerm;
             await gridView.RefreshDataAsync();
         }
+
         protected Dictionary<string, string> AddSearchTerms()
         {
             Dictionary<string, string> searchTerms = new();
@@ -133,5 +145,80 @@ namespace Phoenix.WebClient.Components.Base
                 StateHasChanged();
             }
         }
-    }
+        protected async Task HandleSearchFromRibbonToTable(string searchTerm)
+        {
+            if ((string.IsNullOrEmpty(_searchTerm) && !string.IsNullOrEmpty(searchTerm))
+                || (!string.IsNullOrEmpty(_searchTerm) && string.IsNullOrEmpty(searchTerm))
+                || _searchTerm != searchTerm)
+            {
+				_searchTerm = string.IsNullOrEmpty(searchTerm) ? "" : searchTerm;
+                await ApplyServerSearch();
+			}
+		}
+
+        protected async Task ApplySearchFromWidgetToTable(List<SearchModel> searchModels)
+        {
+            if (searchModels == null || !searchModels.Any())
+                _searchModels.Clear();
+            _searchModels = searchModels;
+			await ApplyServerSearch();
+		}
+
+		protected async Task ClearSearchFromWidgetToTable()
+		{
+			_searchModels.Clear();
+			_searchTerm = string.Empty;
+			await ApplyServerSearch();
+
+		}
+
+		private async Task ApplyServerSearch()
+		{
+			_ModelValues.Clear();
+			_recordsLoaded = 0;
+			_navigationRequired = true;
+			await LoadData();
+		}
+
+		public abstract Task LoadData();
+
+        protected async void SortTable(string sortColumn)
+        {
+            if (!_sortModel.ContainsKey(sortColumn))
+            {
+                _sortModel.Add(sortColumn, 1);
+            }
+            else
+            {
+                _sortModel[sortColumn]++;
+                if (_sortModel[sortColumn] > 2)
+                {
+                    _sortModel[sortColumn] = 0;
+                }
+            }
+			_navigationRequired = true;
+			_recordsLoaded = 0;
+			_ModelValues.Clear();
+			await LoadData();
+			StateHasChanged();
+		}
+
+		protected string SortVisible(string sortColumn)
+        {
+			
+			if (!_sortModel.ContainsKey(sortColumn))
+            {
+                _sortModel.Add(sortColumn, 0);
+            }
+            switch(_sortModel[sortColumn])
+            {
+                case 1:
+                    return "bi bi-arrow-down";
+                case 2:
+                    return "bi bi-arrow-up";
+                default:
+                    return "bi bi-arrow-down-up";
+			}
+		}
+	}
 }

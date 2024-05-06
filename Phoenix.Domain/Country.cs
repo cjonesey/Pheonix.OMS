@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -8,6 +9,6 @@ namespace Phoenix.Domain
         [Required, MaxLength(3)] public string Code { get; set; } = string.Empty;
         [Required, MaxLength(2)] public string ISOCode2 { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public virtual IList<Warehouse> Warehouses { get; set; } = new List<Warehouse>();   
-    }
+        public virtual IList<Warehouse> Warehouses { get; set; } = new List<Warehouse>();
+	}
 }

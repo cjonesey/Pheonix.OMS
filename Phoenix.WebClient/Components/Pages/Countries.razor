@@ -3,7 +3,7 @@
 @inherits ListPageTemplate<CountryModel>
 
 <StandardListButtons
-    MenuName="Warehouses"
+    MenuName="Countries"
     SearchInvoked="HandleSearchFromRibbon"
     NewInvoked="HandleNew"
     DeleteInvoked="HandleDelete"
@@ -28,7 +28,7 @@
     </div>
     <div class="col-md">
         <div class="grid" tabindex="-1">
-            <QuickGrid id="quickGrid" ItemsProvider="gridProvider" @ref="gridView" Virtualize="true" Class="table table-striped table-hover vh-100">
+            <QuickGrid id="quickGrid" ItemsProvider="gridProvider" @ref="gridView" Virtualize="true" Class="table table-striped table-hover">
                 <TemplateColumn Title="Id">
                     <a href="javascript:void(0);" @onclick="() => EditRecord(context)" aria-label="Edit @context.Id">@context.Id</a>
                 </TemplateColumn>

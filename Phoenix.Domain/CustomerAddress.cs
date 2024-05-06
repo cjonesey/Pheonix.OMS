@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -21,7 +22,6 @@ namespace Phoenix.Domain
         [Required] public int WarehouseId { get; set; }
         public string PhoneNumber { get; set; } = string.Empty;
         public string EmailAddress { get; set; } = string.Empty;
-       
 
-    }
+	}
 }

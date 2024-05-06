@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Phoenix.Domain
 {
@@ -41,5 +42,5 @@ namespace Phoenix.Domain
         public byte OrderPaymentStatus { get; set; }
         public string OrderPaymentReference { get; set; } = string.Empty;
 
-    }
+	}
 }

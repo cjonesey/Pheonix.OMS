@@ -9,6 +9,7 @@ namespace Phoenix.Models.Shared
         public DateTime ModifiedOn { get; set; }        
         [Timestamp] public byte[] ChangeCheck { get; set; } = null!;
         public abstract object Identifier();
-        public List<PropertyInfo> SearchProps() => GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(Searchable), true).Any()).ToList();
+		public abstract string NameField();
+		public List<PropertyInfo> SearchProps() => GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(Searchable), true).Any()).ToList();
     }
 }

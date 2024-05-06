@@ -113,7 +113,7 @@ h1:focus {
 
 .search-bar {
     display: inline;
-    padding: .05rem .05rem;
+    padding: 0.40625rem 0.75rem;
     margin-top: 0.125rem;
     margin-bottom: 0.125rem;
     font-size: 1rem;

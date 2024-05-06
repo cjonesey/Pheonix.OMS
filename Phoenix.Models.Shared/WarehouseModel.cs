@@ -16,5 +16,7 @@ namespace Phoenix.Models.Shared
         public CountryModel? Country { get; }
         [Required, MaxLength(3),Searchable(SearchType = BaseValues.SearchType.Equals)] public string CountryCode { get; set; } = string.Empty;
         public override object Identifier() => Id;
-    }
+		public override string NameField() => nameof(Name);
+
+	}
 }

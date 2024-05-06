@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.Extensions.Logging;
 using Phoenix.Domain;
 using Phoenix.WebClient.Components.Base;
 
@@ -7,37 +8,41 @@ namespace Phoenix.WebClient.Components.Pages
 	public partial class PaymentTerms : ListPageTemplate<PaymentTermModel>
     {
         [Inject] IGenericService<PaymentTerm, PaymentTermModel> ? _dataService { get; set; }
-        List<PaymentTermModel> _paymentTerms; 
 
         protected override async Task OnInitializedAsync()
-        {
-            _model = new PaymentTermModel();
-            _paymentTerms = new List<PaymentTermModel>();
-            _paymentTerms = await _dataService!.GetAll(SimpleMapper.MapPaymentTermToPaymentTermModel);
-            //int rowCount = 0;
-            //gridProvider = async req =>
-            //{
-            //    var searchTerms = AddSearchTerms();
-            //    var countries = await _dataService!.FindCountry(searchTerms, _searchTerm, "", req.StartIndex, req.Count ?? 0);
-            //    if (countries == null)
-            //        countries = new List<CountryModel>();
+		{
+            _ModelValues = new List<PaymentTermModel>();
+			_model = new PaymentTermModel();
+		}
 
-            //    if (countries!.Count() == req.Count)
-            //    {
-            //        rowCount = req.StartIndex + req.Count.Value + req.Count ?? 0;
-            //    }
-            //    else
-            //    {
-            //        rowCount = req.StartIndex + countries!.Count;
-            //    }
+		protected override async void OnAfterRender(bool firstRender)
+		{
+            if (firstRender == true)
+            {
+				await LoadData();
+			}
+		}
 
-            //    return GridItemsProviderResult.From(
-            //        items: countries,
-            //        totalItemCount: rowCount);
-            //};
-        }
+		public override async Task LoadData()
+		{
+            if (_navigationRequired == true && _recordsLoaded <= _maxRecords)
+            {
+                _navigationRequired = false;
+                var paymentTermsLoad = await _dataService!.FindRecords(AddSearchTerms(), _searchTerm, _sortModel, SimpleMapper.MapPaymentTermToPaymentTermModel, _recordsLoaded, _pageSize);
+		        if (paymentTermsLoad != null && paymentTermsLoad.Any())
+                {
+                    paymentTermsLoad.ForEach(x => _ModelValues.Add(x));
+                    _recordsLoaded = _ModelValues.Count();
+                    if (paymentTermsLoad.Count >= _pageSize)
+                    {
+                        _navigationRequired = true;
+                    }
+                    await InvokeAsync(StateHasChanged);
+				}
+			}
+		}
 
-        protected override async Task DeleteConfirmed()
+		protected override async Task DeleteConfirmed()
         {
             throw new NotImplementedException();
             //showConfirmDialogue = false;
@@ -55,5 +60,11 @@ namespace Phoenix.WebClient.Components.Pages
             _navigationManager!.NavigateTo("/CountryEdit");
         }
 
-    }
+		private async void LoadMore(Microsoft.AspNetCore.Components.Web.MouseEventArgs e)
+		{
+            await LoadData();
+			await InvokeAsync(StateHasChanged);
+		}
+
+	}
 }
