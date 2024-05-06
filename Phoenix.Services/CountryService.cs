@@ -1,10 +1,10 @@
-﻿using Phoenix.Services.Helpers;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿
+
+using Phoenix.Shared;
 
 namespace Phoenix.Services
 {
-    public class CountryService : ICountryService
+	public class CountryService : ICountryService
     {
         public ILogger<CountryService> _logger;
         private readonly IRepositoryBase<Country> _repository;
@@ -110,7 +110,7 @@ namespace Phoenix.Services
                         //Check whether the value contains the | character - only works for equals
                         if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
                         {
-                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Country>(key, value, prop);
+                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Country>(key, value, prop.PropertyType);
                         }
                         else
                         {

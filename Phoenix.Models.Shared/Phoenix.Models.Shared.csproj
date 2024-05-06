@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Phoenix.Domain\Phoenix.Domain.csproj" />
+    <ProjectReference Include="..\Phoenix.Shared\Phoenix.Shared.csproj" />
   </ItemGroup>
 
 </Project>

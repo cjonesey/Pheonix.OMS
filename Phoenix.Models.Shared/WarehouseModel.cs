@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
-namespace Phoenix.Models.Shared
+﻿namespace Phoenix.Models.Shared
 {
     public class WarehouseModel: BaseModel
     {

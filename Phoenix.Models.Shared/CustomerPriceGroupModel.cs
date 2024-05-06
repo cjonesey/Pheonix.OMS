@@ -1,4 +1,4 @@
-﻿namespace Phoenix.Domain
+﻿namespace Phoenix.Models.Shared
 {
     public class CustomerPriceGroupModel
     {

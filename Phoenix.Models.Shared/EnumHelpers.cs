@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Phoenix.Models.Shared
+﻿namespace Phoenix.Models.Shared
 {
-    public static class EnumHelpers
+	public static class EnumHelpers
     {
         /// <summary>
         /// Get the name of an enum value

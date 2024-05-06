@@ -1,9 +1,6 @@
-﻿using Phoenix.Models.Shared;
-using System.ComponentModel.DataAnnotations;
-
-namespace Phoenix.Domain
+﻿namespace Phoenix.Models.Shared
 {
-    public class CustomerModel : BaseModel
+	public class CustomerModel : BaseModel
     {
         public int Id { get; set; }
         [Required, MaxLength(40)] public string Name { get; set; } = string.Empty;

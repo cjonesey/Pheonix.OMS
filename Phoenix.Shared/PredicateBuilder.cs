@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Phoenix.Services.Helpers
+namespace Phoenix.Shared
 {
     public static class PredicateBuilder
     {

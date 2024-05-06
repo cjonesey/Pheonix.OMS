@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Phoenix.Models.Shared
+﻿namespace Phoenix.Models.Shared
 {
-    public class SearchModel
+	public class SearchModel
     {
         public Guid Id { get; set; }
         public string FieldName { get; set; }

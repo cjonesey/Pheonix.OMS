@@ -1,17 +1,8 @@
-﻿
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Phoenix.Models.Shared;
-using Phoenix.Services.Helpers;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Security.AccessControl;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-using Phoenix.Domain;
+﻿using Phoenix.Shared;
 
 namespace Phoenix.Services
 {
-    public class WarehouseService : IWarehouseService
+	public class WarehouseService : IWarehouseService
     {
         private readonly ILogger<WarehouseService> _logger;
         private readonly IRepositoryBase<Warehouse> _repository;
@@ -135,7 +126,7 @@ namespace Phoenix.Services
                         //Check whether the value contains the | character - only works for equals
                         if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
                         {
-                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Warehouse>(key, value, prop);
+                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Warehouse>(key, value, prop.PropertyType);
                         }
                         else
                         {

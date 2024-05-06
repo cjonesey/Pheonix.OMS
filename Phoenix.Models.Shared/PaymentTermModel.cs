@@ -1,9 +1,4 @@
-﻿using Phoenix.Models.Shared;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-namespace Phoenix.Models.Shared
+﻿namespace Phoenix.Models.Shared
 {
 	/// <summary>
 	/// Payment Terms, including calculations

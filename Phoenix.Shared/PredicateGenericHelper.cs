@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Phoenix.Services.Helpers
+namespace Phoenix.Shared
 {
     public static class PredicateGenericHelper
     {
@@ -47,7 +47,7 @@ namespace Phoenix.Services.Helpers
             if (prop == null)
                 return searchType;
 
-                var attributes = prop.GetCustomAttributes(typeof(Searchable), false);
+            var attributes = prop.GetCustomAttributes(typeof(Searchable), false);
             if (attributes.Length > 0)
             {
                 foreach(var att in attributes)
@@ -61,28 +61,66 @@ namespace Phoenix.Services.Helpers
             return searchType;
         }
 
-        public static Expression<Func<T, bool>> CreateExpressionCallFromList<T>(
+
+		public static BaseValues.SearchType GetSearchTypeForProperty(this PropertyInfo prop)
+		{
+			BaseValues.SearchType searchType = BaseValues.SearchType.Equals;
+			if (prop == null)
+				return searchType;
+
+			var attributes = prop.GetCustomAttributes(typeof(Searchable), false);
+			if (attributes.Length > 0)
+			{
+				foreach (var att in attributes)
+				{
+					if (att is Searchable)
+					{
+						searchType = ((Searchable)att).SearchType;
+					}
+				}
+			}
+			return searchType;
+		}
+
+		public static string GetFieldNameForProperty(this PropertyInfo prop)
+		{
+			var attributes = prop.GetCustomAttributes(typeof(Searchable), false);
+			if (attributes.Length > 0)
+			{
+				foreach (var att in attributes)
+				{
+					if (att is Searchable)
+					{
+						return ((Searchable)att).Fieldname ?? prop.Name;
+					}
+				}
+			}
+			return prop.Name;
+		}
+
+
+		public static Expression<Func<T, bool>> CreateExpressionCallFromList<T>(
             string key,
             string value,
-            PropertyInfo? prop) where T : BaseEntity
+            Type type) where T : class
         {
-            if (prop.PropertyType == typeof(int))
+            if (type == typeof(int))
             {
                 var ids = PredicateGenericHelper.ConvertList<int>(value);
                 return PredicateGenericHelper.CreateExpressionCall<T, int>(
                         key,
                         ids,
                         PredicateGenericHelper.GetMethod(ids.GetType(), BaseValues.SearchType.Contains),
-                        prop.PropertyType);
+                        type);
             }
-            if (prop.PropertyType == typeof(DateTime))
+            if (type == typeof(DateTime))
             {
                 var ids = PredicateGenericHelper.ConvertList<DateTime>(value);
                 return PredicateGenericHelper.CreateExpressionCall<T, DateTime>(
                         key,
                         ids,
                         PredicateGenericHelper.GetMethod(ids.GetType(), BaseValues.SearchType.Contains),
-                        prop.PropertyType);
+                        type);
 
             }
             List<string> idString = value.Split('|').ToList();
@@ -90,7 +128,7 @@ namespace Phoenix.Services.Helpers
                     key,
                     idString,
                     PredicateGenericHelper.GetMethod(idString.GetType(), BaseValues.SearchType.Contains),
-                    prop.PropertyType);
+                    type);
         }
 
         public static List<T> ConvertList<T>(string inputData)

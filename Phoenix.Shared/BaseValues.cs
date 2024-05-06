@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Phoenix.Models.Shared
+﻿namespace Phoenix.Shared
 {
-    public class Searchable : Attribute
+	public class Searchable : Attribute
     {
         public BaseValues.SearchType SearchType { get; set; }
-    }
+		public string Fieldname { get; set; }
+	}
 
     public static class BaseValues
     {

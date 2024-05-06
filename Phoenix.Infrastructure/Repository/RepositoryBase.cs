@@ -1,6 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Phoenix.Shared;
+using System.IO;
+using System;
 using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 
 namespace Phoenix.Infrastructure
@@ -82,17 +87,41 @@ namespace Phoenix.Infrastructure
 
 
 		public virtual async Task<List<TEntity>?> GetExpanded(
-	        Expression<Func<TEntity, bool>>? filter = null,
+			List<(string key, string value, Type fieldType, BaseValues.SearchType searchType)>? entitySearchTerms = null,
+			//Expression<Func<TEntity, bool>>? filter = null,
 			Dictionary<string, byte>? orderBy = null,
 			int pageSize = 0,
 	        int page = 0)
 		{
-			IQueryable<TEntity> query = _context.Set<TEntity>();
-			if (filter != null)
-				query = query.Where(filter);
+			var predicate = PredicateBuilder.True<TEntity>();
+			Expression<Func<TEntity, bool>>? condition = default;
 
-            //Need to order the query by passing a predicate
-            if (orderBy != null && orderBy.Any())
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            if (entitySearchTerms != null && entitySearchTerms.Any())
+            {
+                foreach (var searchRecord in entitySearchTerms)
+                {
+					if (searchRecord.value.Contains('|') && searchRecord.searchType == BaseValues.SearchType.Equals)
+					{
+                        condition = PredicateGenericHelper.CreateExpressionCallFromList<TEntity>(searchRecord.key, searchRecord.value, searchRecord.fieldType);
+                    }
+					else
+					{
+						condition = PredicateGenericHelper.CreateExpressionCall<TEntity>(
+							searchRecord.key,
+						    searchRecord.value,
+						    PredicateGenericHelper.GetMethod(searchRecord.fieldType, searchRecord.searchType),
+							searchRecord.fieldType);
+					}
+					predicate = predicate.And(condition!);
+				}
+                query = query.Where(predicate);
+			}
+
+
+			//Need to order the query by passing a predicate
+			if (orderBy != null && orderBy.Any())
             {
                 foreach (var field in orderBy.Where(x => x.Value != 0))
                 {

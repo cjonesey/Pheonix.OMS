@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Phoenix.Domain;
+using Phoenix.Shared;
 
 namespace Phoenix.Services
 {
@@ -196,7 +197,7 @@ namespace Phoenix.Services
                         //Check whether the value contains the | character - only works for equals
                         if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
                         {
-                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Customer>(key, value, prop);
+                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Customer>(key, value, prop.PropertyType);
                         }
                         else
                         {
