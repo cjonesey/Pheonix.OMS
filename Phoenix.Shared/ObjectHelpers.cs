@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Phoenix.Shared
+﻿namespace Phoenix.Shared
 {
     public static class ObjectHelpers
     {

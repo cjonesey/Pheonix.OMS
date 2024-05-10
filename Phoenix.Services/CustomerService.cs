@@ -192,7 +192,7 @@ namespace Phoenix.Services
                         }
 
                         PropertyInfo? propSearch1 = warehouseSearchProps.Where(x => x.Name == key).FirstOrDefault();
-                        BaseValues.SearchType matchType = PredicateGenericHelper.GetSearchTypeForObject(propSearch1);
+                        BaseValues.SearchType matchType = ModelAttributeHelpers.GetSearchTypeForObject(propSearch1);
 
                         //Check whether the value contains the | character - only works for equals
                         if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)

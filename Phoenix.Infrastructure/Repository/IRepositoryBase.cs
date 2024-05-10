@@ -18,7 +18,7 @@ namespace Phoenix.Infrastructure
 
         List<TEntity>? Get(Func<TEntity, bool> condition);
         Task<IEnumerable<TEntity>> GetAll();
-		Task<List<TEntity>?> GetExpanded(
+		Task<List<TEntity>?> GetUsingGenericSearch(
 			List<(string key, string value, Type fieldType, BaseValues.SearchType searchType)>? entitySearchTerms = null,
 			//Expression<Func<TEntity, bool>>? filter = null,
             Dictionary<string, byte>? orderBy = null,

@@ -13,7 +13,11 @@
             Contains,
             StartsWith,
             EndsWith,
-            Equals
+            Equals,
+            GreaterThan,
+            GreaterThanOrEqual,
+            LessThan,
+            LessThanOrEqual
         }
     }
 }

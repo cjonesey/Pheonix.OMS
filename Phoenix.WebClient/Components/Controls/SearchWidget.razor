@@ -2,13 +2,13 @@
 @* @rendermode InteractiveServer *@
 <span>Filter List By :</span>
 <div class="border-bottom">
-    @foreach (var item in searchModel)
+    @foreach (var item in _searchModel)
     {
         <div class="pb-1">
             @if(@item.FieldSelected != true)
             {
                 <select id="select-@item.Id" @onchange="SetFieldName" class="form-control">
-                    @foreach (var field in lookupValues)
+                    @foreach (var field in _lookupValues)
                     {
                         <option value="@item.Id|@field.Item1">
                             @field.Item2.ToString()
@@ -19,7 +19,14 @@
             else
             {
                 <span><button class="btn bi bi-trash pe-2" @onclick="() => RemoveItem(item)"></button> @item.FieldName</span>
-                <InputText @bind-Value="item.Value" class="form-control pb-2" autocomplete='off' />
+                <InputText @bind-Value="item.Value" class="form-control pb-2" autocomplete='off' @onfocus="() => CheckFieldType(item)"></InputText>
+                @if (_dateTimeFieldVisible == true && (item.FieldType == typeof(DateTime) || item.FieldType == typeof(Nullable<DateTime>)))
+                {
+                    <InputDate @bind-Value="@DateField" class="form-control pb-2"></InputDate>
+                }
+                else
+                {
+                }
             }
         </div>
     }

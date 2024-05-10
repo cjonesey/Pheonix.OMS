@@ -213,9 +213,9 @@ namespace Phoenix.WebClient.Components.Base
             switch(_sortModel[sortColumn])
             {
                 case 1:
-                    return "bi bi-arrow-down";
-                case 2:
-                    return "bi bi-arrow-up";
+					return "bi bi-arrow-up";
+				case 2:
+					return "bi bi-arrow-down";
                 default:
                     return "bi bi-arrow-down-up";
 			}

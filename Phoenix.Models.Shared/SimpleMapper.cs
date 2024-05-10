@@ -7,8 +7,14 @@ namespace Phoenix.Models.Shared
 		public static PaymentTermModel MapPaymentTermToPaymentTermModel(PaymentTerm inModel) => new PaymentTermModel
 		{
 			Id = inModel.Id,
+			Code = inModel.Code,
 			Name = inModel.Name,
-			PaymentDays = inModel.PaymentDays
+			PaymentDayCalculation = inModel.PaymentDayCalculation,
+			PaymentDay = inModel.PaymentDay,
+			PaymentDate = inModel.PaymentDate,
+			NullableDate = inModel.NullableDate,
+			NullableDecimal = inModel.NullableDecimal,
+			NullableInt=inModel.NullableInt
 		};
 	}
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Phoenix.Infrastructure;
 
@@ -11,9 +12,11 @@ using Phoenix.Infrastructure;
 namespace Phoenix.Infrastructure.Migrations
 {
     [DbContext(typeof(PhoenixDBContext))]
-    partial class PhoenixDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240508135304_testing")]
+    partial class testing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -628,11 +631,6 @@ namespace Phoenix.Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -644,13 +642,10 @@ namespace Phoenix.Infrastructure.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<DateTime?>("NullableDate")
+                    b.Property<DateTime?>("NullablDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("NullableDecimal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("NullableInt")
+                    b.Property<int>("NullableInt")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")

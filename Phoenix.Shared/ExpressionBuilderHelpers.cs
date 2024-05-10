@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Phoenix.Shared
+﻿namespace Phoenix.Shared
 {
 	public static class ExpressionBuilderHelpers
 	{

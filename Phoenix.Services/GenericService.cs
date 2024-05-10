@@ -48,10 +48,6 @@ namespace Phoenix.Services
 			var modelProps = typeof(U).GetProperties();
 			List<T>? entityRecords = new();
 			List<U> modelRecords = new();
-			//List<PropertyInfo> differences = new List<PropertyInfo>();
-			//Expression<Func<T, bool>>? condition = default;
-			var predicate = PredicateBuilder.True<T>();
-			bool predicateApplied = false;
 
 			try
 			{
@@ -67,44 +63,25 @@ namespace Phoenix.Services
 						string fieldname = propSearchEntity!.GetFieldNameForProperty();
 						BaseValues.SearchType matchType = propSearchEntity!.GetSearchTypeForProperty();
 
-
-
 						PropertyInfo? prop = entityProps.Where(x => x.Name == fieldname).FirstOrDefault();
 						if (prop == null)
 							break;
+
 						entitySearchTerms.Add(new(fieldname, value, prop.PropertyType, matchType));
-
-						if (!string.IsNullOrEmpty(genericSearch))
-						{
-							var model = (U)Activator.CreateInstance(typeof(U));
-							PropertyInfo? nameProp = entityProps.Where(x => x.Name == model!.NameField()).FirstOrDefault();
-							if (nameProp != null)
-							{
-								entitySearchTerms.Add(new(nameProp.Name, genericSearch, nameProp.PropertyType, matchType));
-							}
-						}
-
-						////Check whether the value contains the | character - only works for equals
-						//if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
-						//{
-						//	condition = PredicateGenericHelper.CreateExpressionCallFromList<T>(key, value, prop);
-						//}
-						//else
-						//{
-						//	PropertyInfo? propSearch = modelProps.Where(x => x.Name == key).FirstOrDefault();
-						//	condition = PredicateGenericHelper.CreateExpressionCall<T>(
-						//		key,
-						//		value,
-						//		PredicateGenericHelper.GetMethod(prop.PropertyType, matchType),
-						//		prop.PropertyType);
-						//}
-						//predicate = predicate.And(condition!);
-						//predicateApplied = true;
+					}
+				}
+				if (!string.IsNullOrEmpty(genericSearch))
+				{
+					var model = (U)Activator.CreateInstance(typeof(U));
+					PropertyInfo? nameProp = entityProps.Where(x => x.Name == model!.NameField()).FirstOrDefault();
+					if (nameProp != null)
+					{
+						entitySearchTerms.Add(new(nameProp.Name, genericSearch, nameProp.PropertyType, BaseValues.SearchType.Contains));
 					}
 				}
 
 				if (take == 0) { take = 20; }
-				entityRecords = await _repository.GetExpanded(entitySearchTerms, sortBy, take, skip);
+				entityRecords = await _repository.GetUsingGenericSearch(entitySearchTerms, sortBy, take, skip);
 
 				if (entityRecords == null)
 					entityRecords = new List<T>();

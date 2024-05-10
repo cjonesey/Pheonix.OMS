@@ -86,9 +86,8 @@ namespace Phoenix.Infrastructure
         }
 
 
-		public virtual async Task<List<TEntity>?> GetExpanded(
+		public virtual async Task<List<TEntity>?> GetUsingGenericSearch(
 			List<(string key, string value, Type fieldType, BaseValues.SearchType searchType)>? entitySearchTerms = null,
-			//Expression<Func<TEntity, bool>>? filter = null,
 			Dictionary<string, byte>? orderBy = null,
 			int pageSize = 0,
 	        int page = 0)
@@ -102,20 +101,52 @@ namespace Phoenix.Infrastructure
             {
                 foreach (var searchRecord in entitySearchTerms)
                 {
-					if (searchRecord.value.Contains('|') && searchRecord.searchType == BaseValues.SearchType.Equals)
-					{
-                        condition = PredicateGenericHelper.CreateExpressionCallFromList<TEntity>(searchRecord.key, searchRecord.value, searchRecord.fieldType);
+                    try
+                    {
+                        Type fieldType = searchRecord.fieldType;
+                        if (searchRecord.value.Contains("..") && searchRecord.searchType == BaseValues.SearchType.Equals
+                            && searchRecord.fieldType != typeof(string))
+                        {
+                            var values = searchRecord.value.Split("..");
+                            if (values.Length >= 0)
+                            {
+                                condition = PredicateGenericHelper.CreateExpressionDynamicCall<TEntity>(
+                                    searchRecord.key,
+                                    values[0],
+                                    BaseValues.SearchType.GreaterThanOrEqual,
+                                    searchRecord.fieldType);
+                                predicate = predicate.And(condition!);
+                            }
+                            if (values.Length >= 1)
+                            {
+                                condition = PredicateGenericHelper.CreateExpressionDynamicCall<TEntity>(
+                                    searchRecord.key,
+                                    values[1],
+                                    BaseValues.SearchType.LessThanOrEqual,
+                                    searchRecord.fieldType);
+                                predicate = predicate.And(condition!);
+                            }
+                        }
+                        else if (searchRecord.value.Contains('|') && searchRecord.searchType == BaseValues.SearchType.Equals)
+                        {
+                            condition = PredicateGenericHelper.CreateExpressionCallFromList<TEntity>(searchRecord.key, searchRecord.value, searchRecord.fieldType);
+                            predicate = predicate.And(condition!);
+                        }
+                        else
+                        {
+                            condition = PredicateGenericHelper.CreateExpressionDynamicCall<TEntity>(
+                                searchRecord.key,
+                                searchRecord.value,
+                                searchRecord.searchType,
+                                searchRecord.fieldType);
+                            predicate = predicate.And(condition!);
+                        }
                     }
-					else
-					{
-						condition = PredicateGenericHelper.CreateExpressionCall<TEntity>(
-							searchRecord.key,
-						    searchRecord.value,
-						    PredicateGenericHelper.GetMethod(searchRecord.fieldType, searchRecord.searchType),
-							searchRecord.fieldType);
-					}
-					predicate = predicate.And(condition!);
-				}
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
                 query = query.Where(predicate);
 			}
 

@@ -1,6 +1,7 @@
 ﻿@page "/paymentterms/"
 @rendermode InteractiveServer
 @inherits ListPageTemplate<PaymentTermModel>
+@using Phoenix.WebClient.Components.Controls
 
 <StandardListButtons MenuName="Payment Terms"
 					 SearchInvoked="HandleSearchFromRibbonToTable"
@@ -29,8 +30,14 @@
 			<thead>
 				<tr>
 					<th>Id <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.Id))"><span class="@SortVisible(nameof(_model.Id))"></span></a></th>
+					<th>Code <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.Code))"><span class="@SortVisible(nameof(_model.Code))"></span></a></th>
 					<th>Name <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.Name))"><span class="@SortVisible(nameof(_model.Name))"></span></a></th>
-					<th>Payment Days <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.PaymentDays))"><span class="@SortVisible(nameof(_model.PaymentDays))"></span></a></th>
+					<th>Payment Day <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.PaymentDay))"><span class="@SortVisible(nameof(_model.PaymentDay))"></span></a></th>
+					<th>Payment Date <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.PaymentDate))"><span class="@SortVisible(nameof(_model.PaymentDate))"></span></a></th>
+					<th>Payment Day Calculation <a href="javascript:void(0);" @onclick="() => SortTable(nameof(_model.PaymentDayCalculation))"><span class="@SortVisible(nameof(_model.PaymentDayCalculation))"></span></a></th>
+					<th>Nullable Date</th>
+					<th>Nullable Decimal</th>
+					<th>Nullable Int</th>
 				</tr>
 			</thead>
 			@if (_ModelValues != null && _ModelValues.Any())
@@ -40,8 +47,19 @@
 					{
 						<tr>
 							<td>@item.Id</td>
+							<td>@item.Code</td>
 							<td>@item.Name</td>
-							<td>@item.PaymentDays</td>
+							<td>@item.PaymentDay</td>
+							<td>@item.PaymentDate.ToShortDateString()</td>
+							<td>@if(item.NullableDate == null)
+								{ 
+									<span></span>
+								}
+								else {
+									@item.NullableDate.Value.ToShortDateString()
+								}</td>
+							<td>@item.NullableDecimal</td>
+							<td>@item.NullableInt</td>
 						</tr>
 					}
 				</tbody>
