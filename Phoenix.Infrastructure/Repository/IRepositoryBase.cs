@@ -1,6 +1,8 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using Phoenix.Shared;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Phoenix.Infrastructure
@@ -18,10 +20,11 @@ namespace Phoenix.Infrastructure
 
         List<TEntity>? Get(Func<TEntity, bool> condition);
         Task<IEnumerable<TEntity>> GetAll();
+		DbSet<TEntity> GetEntityReference();
 		Task<List<TEntity>?> GetUsingGenericSearch(
+			IQueryable<TEntity> queryableObject,
 			List<(string key, string value, Type fieldType, BaseValues.SearchType searchType)>? entitySearchTerms = null,
-			//Expression<Func<TEntity, bool>>? filter = null,
-            Dictionary<string, byte>? orderBy = null,
+			Dictionary<string, byte>? orderBy = null,
             int pageSize = 0, int page = 0);
 		Task Update(TEntity entity, int id);
     }

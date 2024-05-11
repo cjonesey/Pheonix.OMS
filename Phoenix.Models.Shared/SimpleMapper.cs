@@ -1,4 +1,5 @@
 ﻿using Phoenix.Domain;
+using System.Collections.Generic;
 
 namespace Phoenix.Models.Shared
 {
@@ -16,5 +17,14 @@ namespace Phoenix.Models.Shared
 			NullableDecimal = inModel.NullableDecimal,
 			NullableInt=inModel.NullableInt
 		};
+
+		public static SampleHeaderModel MapSampleHeaderToSampleHeaderModel(SampleDetail inModel) =>
+			new SampleHeaderModel
+			{
+				Id = inModel.SampleHeader.Id,
+				Code = inModel.SampleHeader.Code,
+				Name = inModel.Name,
+				DetailId = inModel.Id
+			};
 	}
 }

@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using Phoenix.Shared;
-using System.IO;
-using System;
 using System.Linq.Expressions;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore.Metadata;
+using System.Reflection.Metadata;
 
 
 namespace Phoenix.Infrastructure
@@ -85,8 +82,14 @@ namespace Phoenix.Infrastructure
             return await query.ToListAsync();
         }
 
+        public DbSet<TEntity> GetEntityReference()
+        {
+            return _context.Set<TEntity>();
+        }
 
-		public virtual async Task<List<TEntity>?> GetUsingGenericSearch(
+
+        public virtual async Task<List<TEntity>?> GetUsingGenericSearch(
+			IQueryable<TEntity> query,
 			List<(string key, string value, Type fieldType, BaseValues.SearchType searchType)>? entitySearchTerms = null,
 			Dictionary<string, byte>? orderBy = null,
 			int pageSize = 0,
@@ -95,16 +98,15 @@ namespace Phoenix.Infrastructure
 			var predicate = PredicateBuilder.True<TEntity>();
 			Expression<Func<TEntity, bool>>? condition = default;
 
-            IQueryable<TEntity> query = _context.Set<TEntity>();
-
-            if (entitySearchTerms != null && entitySearchTerms.Any())
+			if (entitySearchTerms != null && entitySearchTerms.Any())
             {
                 foreach (var searchRecord in entitySearchTerms)
                 {
-                    try
+					try
                     {
-                        Type fieldType = searchRecord.fieldType;
-                        if (searchRecord.value.Contains("..") && searchRecord.searchType == BaseValues.SearchType.Equals
+						Type fieldType = searchRecord.fieldType;
+
+						if (searchRecord.value.Contains("..") && searchRecord.searchType == BaseValues.SearchType.Equals
                             && searchRecord.fieldType != typeof(string))
                         {
                             var values = searchRecord.value.Split("..");
@@ -158,8 +160,8 @@ namespace Phoenix.Infrastructure
                 {
 					query = query.OrderByTerm<TEntity>(field.Key, field.Value == 2 ? true : false);
 				}
-
 			}
+
 			if (pageSize != 0)
 				query = query.Skip(page).Take(pageSize);
 			return await query.ToListAsync();

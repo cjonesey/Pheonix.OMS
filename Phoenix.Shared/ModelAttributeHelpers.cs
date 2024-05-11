@@ -45,14 +45,14 @@
 
 		public static string GetFieldNameForProperty(this PropertyInfo prop)
 		{
-			var attributes = prop.GetCustomAttributes(typeof(Searchable), false);
+			var attributes = prop.GetCustomAttributes(typeof(FieldBase), false);
 			if (attributes.Length > 0)
 			{
 				foreach (var att in attributes)
 				{
-					if (att is Searchable)
+					if (att is FieldBase)
 					{
-						return ((Searchable)att).Fieldname ?? prop.Name;
+						return ((FieldBase)att).Name ?? prop.Name;
 					}
 				}
 			}

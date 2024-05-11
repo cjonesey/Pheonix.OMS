@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,7 +24,7 @@ namespace Phoenix.Shared
                 return type.GetMethods().Where(x => x.Name == methodName).FirstOrDefault();
             }
             Type uType = Nullable.GetUnderlyingType(type)!;
-			return type.GetMethod(methodName, new[] { uType == null ? type : uType });
+            return type.GetMethod(methodName, new[] { uType == null ? type : uType });
         }
 
 
@@ -64,25 +66,6 @@ namespace Phoenix.Shared
                     typeFilter);
                 return Expression.Lambda<Func<T, bool>>(call, param);
             }
-            //         if (uType != null)
-            //         {
-            //             var filter = Expression.Constant(
-            //                 Convert.ChangeType(value, type.GetGenericArguments()[0]));
-            //             Expression typeFilter = Expression.Convert(filter, member.Type);
-
-            //             var call = Expression.Equal(
-            //                 member, 
-            //                 typeFilter);
-            //             return Expression.Lambda<Func<T, bool>>(call, param) ;
-            //}
-            //else
-            //         {
-            //	MethodCallExpression call = Expression.Equal(
-            //		member,
-            //		MethodInfo.gr,
-            //		Expression.Constant(Convert.ChangeType(value, type), type));
-            //	return Expression.Lambda<Func<T, bool>>(call, param);
-            //}
         }
 
         public static Expression<Func<T, bool>> CreateExpressionDynamicCall<T>(
@@ -92,10 +75,22 @@ namespace Phoenix.Shared
             Type type)
         {
             Type uType = Nullable.GetUnderlyingType(type)!;
+            
             var param = Expression.Parameter(typeof(T), "x");
-            var member = Expression.Property(param, key);
-            Expression typeFilter = default;
+            Expression member = null;
+
+			if (key.Contains(".")) // Sub Table
+			{
+				member = PredicateGenericHelper.GetNestedExprProperty(param, key);
+			}
+            else
+            {
+				member = Expression.Property(param, key);
+			}
+
+			Expression typeFilter = default;
             Expression call = default;
+
             if (uType != null)
             {
                 var filter = Expression.Constant(
@@ -143,7 +138,9 @@ namespace Phoenix.Shared
                         typeFilter);
                     break;
             }
-            return Expression.Lambda<Func<T, bool>>(call, param);
+
+
+			return Expression.Lambda<Func<T, bool>>(call, param);
         }
         /// <summary>
         /// Create expression from list - not pretty, however it works
@@ -286,5 +283,48 @@ namespace Phoenix.Shared
             return true;
         }
 
-    }
+
+        /// <summary>
+        /// Creates a Nested Expression used when searching and sorting on tables that are joined using includes
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+		public static MemberExpression GetNestedExprProperty(Expression expr, string propName)
+		{
+			string[] arrProp = propName.Split('.');
+			int arrPropCount = arrProp.Length;
+			return (arrPropCount > 1) ? 
+                Expression.Property(GetNestedExprProperty(expr, arrProp.Take(arrPropCount - 1)
+                .Aggregate((a, i) => a + "." + i)), arrProp[arrPropCount - 1]) 
+                : Expression.Property(expr, propName);
+		}
+
+
+        /// <summary>
+        /// Gets the property from the nested table - uses . notation to split tables
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+		public static PropertyInfo? GetPropertiesRecursively(Type type, string propName)
+		{
+			string[] arrProp = propName.Split('.');
+			int arrPropCount = arrProp.Length;
+
+            if (arrPropCount > 1)
+            {
+				List<PropertyInfo> property = type.GetProperties().Where(x => x.Name == arrProp[0]).ToList();
+				if (property == null)
+					return null; //Property does not exist
+
+                var baseType = property.FirstOrDefault()!.PropertyType;
+                if (baseType.BaseType == null)
+                    return null; //Not a base type
+                return GetPropertiesRecursively(baseType, arrProp[arrPropCount-1]);
+			}
+            return type.GetProperties().Where(x => x.Name == arrProp[0]).FirstOrDefault();
+		}
+
+	}
 }

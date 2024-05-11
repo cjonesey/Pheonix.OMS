@@ -184,6 +184,8 @@ namespace Phoenix.WebClient.Components.Base
 
         protected async void SortTable(string sortColumn)
         {
+            //Map the tables using the Search Attributes
+
             if (!_sortModel.ContainsKey(sortColumn))
             {
                 _sortModel.Add(sortColumn, 1);
@@ -196,6 +198,7 @@ namespace Phoenix.WebClient.Components.Base
                     _sortModel[sortColumn] = 0;
                 }
             }
+
 			_navigationRequired = true;
 			_recordsLoaded = 0;
 			_ModelValues.Clear();

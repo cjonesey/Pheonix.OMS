@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Phoenix.Domain;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Phoenix.Infrastructure
 {
@@ -34,6 +35,9 @@ namespace Phoenix.Infrastructure
         public DbSet<VATPostingGroup> VATPostingGroups { get; set; } = null!;
         public DbSet<CustomerPostingGroup> CustomerPostingGroups { get; set; } = null!;
         public DbSet<CustomerPriceGroup> CustomerPriceGroups { get; set; } = null!;
+
+        public DbSet<SampleHeader> SampleHeader { get; set; }
+        public DbSet<SampleDetail> SampleDetail { get; set; }
 
 
         public override int SaveChanges()
@@ -89,6 +93,13 @@ namespace Phoenix.Infrastructure
                 .WithMany(e => e.Warehouses)
                 .HasForeignKey(e => e.CountryId)
                 .HasPrincipalKey(e => e.Id);
+            modelBuilder.Entity<SampleHeader>()
+                .HasKey(e => e.Id);
+            modelBuilder.Entity<SampleDetail>()
+                .HasOne(x => x.SampleHeader)
+                .WithMany(x => x.SampleDetails)
+                .HasForeignKey(x => x.SampleHeaderId)
+                .HasPrincipalKey(x => x.Id);            
         }
     }
 }
