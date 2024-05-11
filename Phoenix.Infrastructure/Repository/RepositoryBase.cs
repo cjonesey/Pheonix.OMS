@@ -112,7 +112,7 @@ namespace Phoenix.Infrastructure
                             var values = searchRecord.value.Split("..");
                             if (values.Length >= 0)
                             {
-                                condition = PredicateGenericHelper.CreateExpressionDynamicCall<TEntity>(
+                                condition = ExpressionBuilderHelpers.CreateExpressionDynamicCall<TEntity>(
                                     searchRecord.key,
                                     values[0],
                                     BaseValues.SearchType.GreaterThanOrEqual,
@@ -121,7 +121,7 @@ namespace Phoenix.Infrastructure
                             }
                             if (values.Length >= 1)
                             {
-                                condition = PredicateGenericHelper.CreateExpressionDynamicCall<TEntity>(
+                                condition = ExpressionBuilderHelpers.CreateExpressionDynamicCall<TEntity>(
                                     searchRecord.key,
                                     values[1],
                                     BaseValues.SearchType.LessThanOrEqual,
@@ -131,12 +131,12 @@ namespace Phoenix.Infrastructure
                         }
                         else if (searchRecord.value.Contains('|') && searchRecord.searchType == BaseValues.SearchType.Equals)
                         {
-                            condition = PredicateGenericHelper.CreateExpressionCallFromList<TEntity>(searchRecord.key, searchRecord.value, searchRecord.fieldType);
+                            condition = ExpressionBuilderHelpers.CreateExpressionCallFromList<TEntity>(searchRecord.key, searchRecord.value, searchRecord.fieldType);
                             predicate = predicate.And(condition!);
                         }
                         else
                         {
-                            condition = PredicateGenericHelper.CreateExpressionDynamicCall<TEntity>(
+                            condition = ExpressionBuilderHelpers.CreateExpressionDynamicCall<TEntity>(
                                 searchRecord.key,
                                 searchRecord.value,
                                 searchRecord.searchType,

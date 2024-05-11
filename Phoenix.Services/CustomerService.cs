@@ -197,15 +197,15 @@ namespace Phoenix.Services
                         //Check whether the value contains the | character - only works for equals
                         if (value.Contains('|') && matchType == BaseValues.SearchType.Equals)
                         {
-                            condition = PredicateGenericHelper.CreateExpressionCallFromList<Customer>(key, value, prop.PropertyType);
+                            condition = ExpressionBuilderHelpers.CreateExpressionCallFromList<Customer>(key, value, prop.PropertyType);
                         }
                         else
                         {
                             PropertyInfo? propSearch = warehouseSearchProps.Where(x => x.Name == key).FirstOrDefault();
-                            condition = PredicateGenericHelper.CreateExpressionCall<Customer>(
+                            condition = ExpressionBuilderHelpers.CreateExpressionCall<Customer>(
                                 key,
                                 value,
-                                PredicateGenericHelper.GetMethod(prop.PropertyType, matchType),
+                                ExpressionBuilderHelpers.GetMethod(prop.PropertyType, matchType),
                                 prop.PropertyType);
                         }
                         predicate = predicate.And(condition!);

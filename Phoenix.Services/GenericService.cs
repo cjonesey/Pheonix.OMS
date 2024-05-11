@@ -149,7 +149,7 @@ namespace Phoenix.Services
 			PropertyInfo? prop = null;
 			if (fieldname.Contains("."))
 			{
-				prop = PredicateGenericHelper.GetPropertiesRecursively(typeof(T), fieldname);
+				prop = ExpressionBuilderHelpers.GetPropertiesRecursively(typeof(T), fieldname);
 			}
 			else
 			{
@@ -172,7 +172,7 @@ namespace Phoenix.Services
 			if (prop == null)
 				return;
 			var fieldName = prop.GetFieldNameForProperty();
-			prop = PredicateGenericHelper.GetPropertiesRecursively(typeof(T), fieldName);
+			prop = ExpressionBuilderHelpers.GetPropertiesRecursively(typeof(T), fieldName);
 			if (prop == null)
 				return;
 			sortBySorted.Add(fieldName, sortRecord.Value);
